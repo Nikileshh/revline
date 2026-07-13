@@ -26,10 +26,10 @@ export function Hero({ instagramUrl }: HeroProps) {
 
   return (
     <section className="relative overflow-hidden">
-      {/* Redline glow */}
+      {/* Gold glow */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-[500px] bg-[radial-gradient(ellipse_60%_50%_at_50%_-10%,oklch(0.6_0.225_27/0.25),transparent)]"
+        className="pointer-events-none absolute inset-x-0 top-0 h-[500px] bg-[radial-gradient(ellipse_60%_50%_at_50%_-10%,color-mix(in_oklab,var(--primary)_25%,transparent),transparent)]"
       />
 
       <div className="mx-auto flex max-w-6xl flex-col items-center px-4 pb-20 pt-24 text-center sm:px-6 sm:pb-28 sm:pt-32">

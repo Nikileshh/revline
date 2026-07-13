@@ -82,7 +82,7 @@ export function PhotoManager({ eventId, photos }: PhotoManagerProps) {
             Session photos
           </h2>
           <p className="text-sm text-muted-foreground">
-            Shown in the gallery on the event page once the event is completed.
+            Shown in the gallery on the event page — for upcoming and completed events.
           </p>
         </div>
         <Button asChild variant="outline" disabled={uploading}>

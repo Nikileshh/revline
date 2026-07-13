@@ -53,7 +53,7 @@ export default async function EventDetailPage({ params }: PageProps) {
 
   const [confirmedCount, photos] = await Promise.all([
     getConfirmedCount(event.id),
-    event.status === "completed" ? getEventPhotos(event.id) : Promise.resolve([]),
+    getEventPhotos(event.id),
   ]);
 
   const isUpcoming = event.status === "upcoming";
