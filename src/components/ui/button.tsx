@@ -65,11 +65,9 @@ function Button({
         data-slot="button"
         className={classes}
         nativeButton={child.type === "button"}
-        render={React.cloneElement(child, {}, undefined)}
+        render={child}
         {...props}
-      >
-        {child.props.children}
-      </ButtonPrimitive>
+      />
     )
   }
 
