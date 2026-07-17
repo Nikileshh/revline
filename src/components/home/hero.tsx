@@ -6,6 +6,7 @@ import { motion, useReducedMotion, useScroll, useTransform } from "motion/react"
 import { ArrowRight } from "lucide-react";
 
 import { InstagramIcon } from "@/components/shared/instagram-icon";
+import { RunnerWordmark } from "@/components/shared/runner-wordmark";
 import { Button } from "@/components/ui/button";
 
 const SPORTS = ["Running", "Football", "Turf", "Trekking", "Swimming", "Workouts"];
@@ -25,6 +26,8 @@ export function Hero({ instagramUrl }: HeroProps) {
   const contentY = useTransform(scrollYProgress, [0, 1], [0, 90]);
   const contentOpacity = useTransform(scrollYProgress, [0, 0.75], [1, 0.15]);
   const glowY = useTransform(scrollYProgress, [0, 1], [0, 160]);
+  // Sports ticker slides sideways as you scroll past the hero
+  const tickerX = useTransform(scrollYProgress, [0, 1], [48, -48]);
 
   const anim = (delay: number) =>
     reduce
@@ -46,7 +49,12 @@ export function Hero({ instagramUrl }: HeroProps) {
 
       <motion.div
         style={reduce ? undefined : { y: contentY, opacity: contentOpacity }}
-        className="mx-auto flex max-w-6xl flex-col items-center px-4 pb-20 pt-24 text-center sm:px-6 sm:pb-28 sm:pt-32">
+        className="mx-auto flex max-w-6xl flex-col items-center px-4 pb-20 pt-16 text-center sm:px-6 sm:pb-28 sm:pt-20">
+        {/* Runner draws the rev line and reveals the wordmark */}
+        <div className="mb-8 w-full max-w-xs sm:max-w-sm">
+          <RunnerWordmark />
+        </div>
+
         <motion.p
           {...anim(0)}
           className="mb-6 rounded-full border border-border bg-card px-4 py-1.5 text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground"
@@ -88,18 +96,24 @@ export function Hero({ instagramUrl }: HeroProps) {
         </motion.div>
       </motion.div>
 
-      {/* Sports ticker */}
-      <div className="border-y border-border/60 bg-card/50 py-4" aria-hidden>
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-8 gap-y-2 px-4 sm:px-6">
-          {SPORTS.map((sport) => (
+      {/* Sports ticker — slides sideways as the page scrolls */}
+      <div className="overflow-hidden border-y border-border/60 bg-card/50 py-4" aria-hidden>
+        <motion.div
+          style={reduce ? undefined : { x: tickerX }}
+          className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-8 gap-y-2 px-4 sm:px-6"
+        >
+          {SPORTS.map((sport, i) => (
             <span
               key={sport}
-              className="font-display text-lg font-semibold uppercase tracking-[0.15em] text-muted-foreground"
+              className="flex items-center gap-8 font-display text-lg font-semibold uppercase tracking-[0.15em] text-muted-foreground"
             >
               {sport}
+              {i < SPORTS.length - 1 && (
+                <span className="size-1.5 rounded-full bg-primary/60" />
+              )}
             </span>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
