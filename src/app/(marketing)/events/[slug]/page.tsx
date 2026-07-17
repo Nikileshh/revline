@@ -28,7 +28,7 @@ import {
 } from "@/server/queries";
 import { INTENSITY_LABELS, SPORT_LABELS } from "@/types";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 30;
 
 interface PageProps {
   params: Promise<{ slug: string }>;

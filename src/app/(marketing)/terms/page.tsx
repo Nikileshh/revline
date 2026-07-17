@@ -3,7 +3,7 @@ import ReactMarkdown from "react-markdown";
 
 import { getSiteSettings } from "@/server/queries";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Terms & Conditions",

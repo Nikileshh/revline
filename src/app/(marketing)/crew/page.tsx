@@ -7,7 +7,7 @@ import { InstagramIcon } from "@/components/shared/instagram-icon";
 import { Reveal } from "@/components/shared/reveal";
 import { getCrew } from "@/server/queries";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "The Crew",

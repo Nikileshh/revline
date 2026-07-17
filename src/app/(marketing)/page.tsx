@@ -22,7 +22,9 @@ import {
   getUpcomingEvents,
 } from "@/server/queries";
 
-export const dynamic = "force-dynamic";
+// Cached and revalidated — instant navigation, refreshed every 60s and on
+// new registrations via revalidatePath.
+export const revalidate = 60;
 
 const SPORTS = ["Running", "Football", "Turf", "Trekking", "Swimming", "Workouts"];
 
@@ -57,11 +59,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <SportsHero
-        instagramUrl={settings.instagram_url}
-        whatsappUrl={settings.whatsapp_community_url}
-        memberCount={memberCount}
-      />
+      <SportsHero instagramUrl={settings.instagram_url} memberCount={memberCount} />
 
       {/* Sports marquee — accelerates and flips with scroll */}
       <div className="border-y border-white/10 bg-white/[0.03] py-4" aria-hidden>
@@ -208,7 +206,6 @@ export default async function HomePage() {
           <div className="relative overflow-hidden rounded-[2rem] border border-primary/40 bg-gradient-to-br from-primary/30 via-card to-background p-10 text-center sm:p-16">
             <div className="pointer-events-none absolute -right-24 -top-24 size-80 rounded-full bg-primary/25 blur-3xl" />
             <div className="pointer-events-none absolute -bottom-28 -left-20 size-80 rounded-full bg-primary/20 blur-3xl" />
-            <div className="film-grain pointer-events-none absolute inset-0 opacity-[0.05] mix-blend-overlay" />
             <h2 className="relative text-balance font-display text-5xl font-bold uppercase italic tracking-wide text-white sm:text-6xl">
               Ready to join the movement?
             </h2>
