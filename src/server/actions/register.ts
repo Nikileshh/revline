@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 
 import { serverEnv } from "@/lib/env";
+import { formatEventDate, formatEventTime } from "@/lib/format";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import {
   registrationSchema,
@@ -107,6 +108,16 @@ export async function registerForEvent(
       .join(" | "),
   });
 
+  // WhatsApp confirmation — best-effort, skipped unless the Cloud API is configured.
+  if (status === "confirmed") {
+    await sendWhatsAppConfirmation({
+      phone,
+      name,
+      eventTitle: event.title,
+      eventWhen: `${formatEventDate(event.event_date)}, ${formatEventTime(event.event_date)}`,
+    });
+  }
+
   revalidatePath(`/events/${event.slug}`);
   revalidatePath("/events");
 
@@ -118,6 +129,59 @@ export async function registerForEvent(
         : "The session is full — you've been added to the waitlist and we'll message you if a spot opens.",
     data: { status, whatsappGroupUrl: event.whatsapp_group_url },
   };
+}
+
+async function sendWhatsAppConfirmation(input: {
+  phone: string;
+  name: string;
+  eventTitle: string;
+  eventWhen: string;
+}): Promise<void> {
+  try {
+    const { WHATSAPP_CLOUD_TOKEN, WHATSAPP_PHONE_NUMBER_ID, WHATSAPP_TEMPLATE_NAME } =
+      serverEnv();
+    if (!WHATSAPP_CLOUD_TOKEN || !WHATSAPP_PHONE_NUMBER_ID) return;
+
+    // Normalise to international digits; bare 10-digit numbers assume India.
+    let digits = input.phone.replace(/\D/g, "");
+    if (digits.length === 10) digits = `91${digits}`;
+
+    const res = await fetch(
+      `https://graph.facebook.com/v21.0/${WHATSAPP_PHONE_NUMBER_ID}/messages`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${WHATSAPP_CLOUD_TOKEN}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          messaging_product: "whatsapp",
+          to: digits,
+          type: "template",
+          template: {
+            name: WHATSAPP_TEMPLATE_NAME ?? "registration_confirmed",
+            language: { code: "en" },
+            components: [
+              {
+                type: "body",
+                parameters: [
+                  { type: "text", text: input.name },
+                  { type: "text", text: input.eventTitle },
+                  { type: "text", text: input.eventWhen },
+                ],
+              },
+            ],
+          },
+        }),
+        signal: AbortSignal.timeout(8000),
+      },
+    );
+    if (!res.ok) {
+      console.error("WhatsApp confirmation failed:", res.status, await res.text());
+    }
+  } catch (err) {
+    console.error("WhatsApp confirmation error:", err);
+  }
 }
 
 async function pushToSheet(row: Record<string, string | number>): Promise<void> {

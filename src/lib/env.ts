@@ -7,6 +7,10 @@ import { z } from "zod";
 const serverSchema = z.object({
   SUPABASE_SERVICE_ROLE_KEY: z.string().min(1),
   SHEETS_WEBHOOK_URL: z.string().url().optional(),
+  // WhatsApp Cloud API (Meta) — all optional; confirmations are skipped when unset
+  WHATSAPP_CLOUD_TOKEN: z.string().optional(),
+  WHATSAPP_PHONE_NUMBER_ID: z.string().optional(),
+  WHATSAPP_TEMPLATE_NAME: z.string().optional(),
 });
 
 const publicSchema = z.object({
@@ -19,6 +23,9 @@ export function serverEnv() {
   return serverSchema.parse({
     SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
     SHEETS_WEBHOOK_URL: process.env.SHEETS_WEBHOOK_URL || undefined,
+    WHATSAPP_CLOUD_TOKEN: process.env.WHATSAPP_CLOUD_TOKEN || undefined,
+    WHATSAPP_PHONE_NUMBER_ID: process.env.WHATSAPP_PHONE_NUMBER_ID || undefined,
+    WHATSAPP_TEMPLATE_NAME: process.env.WHATSAPP_TEMPLATE_NAME || undefined,
   });
 }
 

@@ -16,7 +16,10 @@
  * automatically, plus an "All Registrations" master tab.
  */
 
-var HEADERS = ["Timestamp", "Event", "Name", "Age", "Phone", "Email", "Status", "Answers"];
+var HEADERS = [
+  "Timestamp", "Event", "Name", "Age", "Gender", "Phone",
+  "Emergency contact", "Blood group", "Email", "Status", "Answers",
+];
 
 function doPost(e) {
   try {
@@ -26,7 +29,10 @@ function doPost(e) {
       body.event || "",
       body.name || "",
       body.age || "",
+      body.gender || "",
       "'" + (body.phone || ""), // leading quote keeps +91… as text
+      "'" + (body.emergency_contact || ""),
+      body.blood_group || "",
       body.email || "",
       body.status || "",
       body.answers || "",
