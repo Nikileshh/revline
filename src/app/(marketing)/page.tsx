@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 
 import { SportsHero } from "@/components/home/sports-hero";
+import { VelocityMarquee } from "@/components/home/velocity-marquee";
 import { EventCard } from "@/components/events/event-card";
 import { Reveal } from "@/components/shared/reveal";
 import {
@@ -62,19 +63,19 @@ export default async function HomePage() {
         memberCount={memberCount}
       />
 
-      {/* Sports marquee */}
-      <div className="overflow-hidden border-y border-white/10 bg-white/[0.03] py-4" aria-hidden>
-        <div className="animate-marquee flex w-max items-center gap-10">
-          {[...SPORTS, ...SPORTS].map((sport, i) => (
+      {/* Sports marquee — accelerates and flips with scroll */}
+      <div className="border-y border-white/10 bg-white/[0.03] py-4" aria-hidden>
+        <VelocityMarquee>
+          {SPORTS.map((sport) => (
             <span
-              key={`${sport}-${i}`}
+              key={sport}
               className="flex items-center gap-10 font-display text-xl font-bold uppercase italic tracking-[0.15em] text-white/40"
             >
               {sport}
               <span className="size-2 rounded-full bg-primary/70" />
             </span>
           ))}
-        </div>
+        </VelocityMarquee>
       </div>
 
       {/* Story */}

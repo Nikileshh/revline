@@ -39,72 +39,168 @@ export function Basketball({ className }: { className?: string }) {
 
 export function Football({ className }: { className?: string }) {
   const id = useId();
+  // Unit pentagon (apex up), reused for the ring panels via transforms
+  const pent = "0,-12 11.4,-3.7 7,9.7 -7,9.7 -11.4,-3.7";
+  // Ring panel placements: angle around the ball, squashed radially to fake curvature
+  const ring = [
+    { a: -90, x: 50, y: 15 },
+    { a: -18, x: 83.3, y: 39.2 },
+    { a: 54, x: 70.6, y: 78.3 },
+    { a: 126, x: 29.4, y: 78.3 },
+    { a: 198, x: 16.7, y: 39.2 },
+  ];
   return (
     <svg viewBox="0 0 100 100" className={className} aria-hidden>
       <defs>
-        <radialGradient id={`${id}f`} cx="32%" cy="26%" r="90%">
-          <stop offset="0%" stopColor="#ffffff" />
-          <stop offset="50%" stopColor="#E6E9EE" />
-          <stop offset="82%" stopColor="#A9AEBB" />
-          <stop offset="100%" stopColor="#666C7A" />
+        <radialGradient id={`${id}f`} cx="34%" cy="28%" r="95%">
+          <stop offset="0%" stopColor="#FFFFFF" />
+          <stop offset="42%" stopColor="#F1F3F7" />
+          <stop offset="75%" stopColor="#C2C8D3" />
+          <stop offset="100%" stopColor="#737A89" />
+        </radialGradient>
+        <linearGradient id={`${id}p`} x1="0" y1="0" x2="0.4" y2="1">
+          <stop offset="0%" stopColor="#232936" />
+          <stop offset="100%" stopColor="#10141D" />
+        </linearGradient>
+        <radialGradient id={`${id}r`} cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#0A0C12" stopOpacity="0" />
+          <stop offset="72%" stopColor="#0A0C12" stopOpacity="0" />
+          <stop offset="92%" stopColor="#0A0C12" stopOpacity="0.28" />
+          <stop offset="100%" stopColor="#0A0C12" stopOpacity="0.5" />
         </radialGradient>
         <clipPath id={`${id}c`}>
           <circle cx="50" cy="50" r="47" />
         </clipPath>
       </defs>
+
       <circle cx="50" cy="50" r="47" fill={`url(#${id}f)`} />
+
       <g clipPath={`url(#${id}c)`}>
-        <polygon points="50,34 64,44 59,60 41,60 36,44" fill="#151922" />
-        {/* Edge panels, clipped by the ball */}
-        <polygon points="50,-6 62,2 58,16 42,16 38,2" fill="#151922" opacity="0.9" />
-        <polygon points="94,32 104,44 98,58 84,54 84,40" fill="#151922" opacity="0.9" />
-        <polygon points="78,88 64,94 56,82 66,70 80,74" fill="#151922" opacity="0.9" />
-        <polygon points="22,88 36,94 44,82 34,70 20,74" fill="#151922" opacity="0.9" />
-        <polygon points="-4,44 6,32 16,40 16,54 2,58" fill="#151922" opacity="0.9" />
+        {/* Centre panel */}
+        <polygon points="50,33 64.3,43.4 58.8,60.2 41.2,60.2 35.7,43.4" fill={`url(#${id}p)`} />
+        {/* Ring panels, squashed toward the rim so the surface reads as a sphere */}
+        {ring.map((r) => (
+          <polygon
+            key={r.a}
+            points={pent}
+            fill={`url(#${id}p)`}
+            transform={`translate(${r.x} ${r.y}) rotate(${r.a + 90}) scale(1 0.62)`}
+          />
+        ))}
+        {/* Seams: centre panel corners out to the ring panels, gently bowed */}
         <path
-          d="M50 34V16M64 44l20-6M59 60l9 16M41 60l-9 16M36 44l-20-6"
-          stroke="#151922"
-          strokeWidth="2.2"
+          d="M50 33Q49 24 50 21M64.3 43.4Q72 41 76.5 41M58.8 60.2Q64 66 66.5 70M41.2 60.2Q36 66 33.5 70M35.7 43.4Q28 41 23.5 41"
+          stroke="#141824"
+          strokeWidth="2"
+          fill="none"
           strokeLinecap="round"
-          opacity="0.85"
+          opacity="0.8"
+        />
+        {/* Rim seams between neighbouring ring panels */}
+        <path
+          d="M62 12q12 6 19 17M89 48q-1 14-9 24M56 88q-6 1-12 0M20 72q-8-10-9-24M31 15q-12 6-18 17"
+          stroke="#141824"
+          strokeWidth="1.8"
+          fill="none"
+          strokeLinecap="round"
+          opacity="0.55"
         />
       </g>
-      <ellipse cx="34" cy="24" rx="13" ry="8" fill="#ffffff" opacity="0.5" />
+
+      {/* Sphere shading: inner rim shadow, then speculars */}
+      <circle cx="50" cy="50" r="47" fill={`url(#${id}r)`} />
+      <ellipse cx="33" cy="24" rx="14" ry="9" fill="#ffffff" opacity="0.5" />
+      <ellipse cx="29" cy="20" rx="5.5" ry="3.5" fill="#ffffff" opacity="0.85" />
     </svg>
   );
 }
 
 export function TennisRacquet({ className }: { className?: string }) {
   const id = useId();
+  // Dense 12x15 string bed clipped to the head
+  const verticals = Array.from({ length: 12 }, (_, i) => 24 + i * 4.4);
+  const horizontals = Array.from({ length: 15 }, (_, i) => 14 + i * 5.4);
   return (
-    <svg viewBox="0 0 60 122" className={className} aria-hidden>
+    <svg viewBox="0 0 90 200" className={className} aria-hidden>
       <defs>
-        <linearGradient id={`${id}fr`} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#4A5468" />
-          <stop offset="55%" stopColor="#232936" />
-          <stop offset="100%" stopColor="#10131B" />
+        {/* Two-tone paint job: maroon into black toward the throat */}
+        <linearGradient id={`${id}paint`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#B24955" />
+          <stop offset="45%" stopColor="#8E3B45" />
+          <stop offset="80%" stopColor="#3A1B20" />
+          <stop offset="100%" stopColor="#17141A" />
         </linearGradient>
-        <linearGradient id={`${id}g`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#B24A56" />
-          <stop offset="100%" stopColor="#5F2229" />
+        <linearGradient id={`${id}graphite`} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#343B49" />
+          <stop offset="100%" stopColor="#12151C" />
         </linearGradient>
+        <linearGradient id={`${id}grip`} x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor="#2E2A31" />
+          <stop offset="45%" stopColor="#1B181E" />
+          <stop offset="100%" stopColor="#0E0C10" />
+        </linearGradient>
+        <clipPath id={`${id}bed`}>
+          <ellipse cx="45" cy="52" rx="30" ry="42" />
+        </clipPath>
       </defs>
-      {/* Strings */}
+
+      {/* String bed */}
+      <g clipPath={`url(#${id}bed)`}>
+        <ellipse cx="45" cy="52" rx="30" ry="42" fill="#0E1116" opacity="0.35" />
+        {verticals.map((x) => (
+          <line key={`v${x}`} x1={x} y1="8" x2={x} y2="96" stroke="#EDF0F5" strokeWidth="0.8" opacity="0.7" />
+        ))}
+        {horizontals.map((y) => (
+          <line key={`h${y}`} x1="13" y1={y} x2="77" y2={y} stroke="#D9DEE7" strokeWidth="0.7" opacity="0.6" />
+        ))}
+        {/* Brand stencil on the strings */}
+        <text
+          x="45"
+          y="62"
+          textAnchor="middle"
+          fontSize="26"
+          fontWeight="800"
+          fontStyle="italic"
+          fill="var(--primary)"
+          opacity="0.8"
+          fontFamily="var(--font-display), sans-serif"
+        >
+          R
+        </text>
+      </g>
+
+      {/* Frame: painted outer hoop, dark inner rim, bumper on top */}
+      <ellipse cx="45" cy="52" rx="34" ry="46" fill="none" stroke={`url(#${id}paint)`} strokeWidth="8" />
+      <ellipse cx="45" cy="52" rx="29.5" ry="41.5" fill="none" stroke="#0C0A0E" strokeWidth="2" opacity="0.9" />
+      <path d="M20 24C27 12 63 12 70 24" fill="none" stroke="#17141A" strokeWidth="8" strokeLinecap="round" />
+      {/* Paint highlight along the upper-left of the hoop */}
+      <path d="M15 42C15 26 26 13 41 9" fill="none" stroke="#E9A5AD" strokeWidth="2" strokeLinecap="round" opacity="0.65" />
+
+      {/* Throat: open V into the shaft, maroon pinstripes on the arms */}
       <path
-        d="M15 18v29M22 12v41M30 10v45M38 12v41M45 18v29M11 24h38M9 33h42M9 42h42M13 51h34"
-        stroke="#E4E9F2"
-        strokeWidth="0.9"
-        opacity="0.5"
+        d="M17 68c4 22 18 30 22 44h12c4-14 18-22 22-44l-7-3c-5 18-15 26-19 38-4-12-14-20-19-38Z"
+        fill={`url(#${id}graphite)`}
       />
-      {/* Frame with maroon inlay */}
-      <ellipse cx="30" cy="32" rx="23" ry="29" fill="none" stroke={`url(#${id}fr)`} strokeWidth="5" />
-      <ellipse cx="30" cy="32" rx="23" ry="29" fill="none" stroke="var(--primary)" strokeWidth="1.4" opacity="0.85" strokeDasharray="30 14" />
-      {/* Throat */}
-      <path d="M22 58l5 17M38 58l-5 17" stroke={`url(#${id}fr)`} strokeWidth="4.5" strokeLinecap="round" />
-      {/* Wrapped grip */}
-      <rect x="25" y="74" width="10" height="40" rx="4.5" fill={`url(#${id}g)`} />
-      <path d="M25 80l10 4M25 88l10 4M25 96l10 4M25 104l10 4" stroke="#3d151a" strokeWidth="1.4" opacity="0.7" />
-      <ellipse cx="30" cy="115" rx="6" ry="3" fill="#2A1013" />
+      <path d="M21 74c5 16 14 24 18 34M69 74c-5 16-14 24-18 34" stroke="var(--primary)" strokeWidth="1.6" fill="none" opacity="0.85" />
+
+      {/* Shaft + wrapped grip + butt cap */}
+      <rect x="39" y="110" width="12" height="12" fill={`url(#${id}graphite)`} />
+      <rect x="37.5" y="121" width="15" height="60" rx="5.5" fill={`url(#${id}grip)`} />
+      {Array.from({ length: 9 }, (_, i) => (
+        <line
+          key={i}
+          x1="37.5"
+          y1={126 + i * 6}
+          x2="52.5"
+          y2={130 + i * 6}
+          stroke="#000000"
+          strokeWidth="1.6"
+          opacity="0.55"
+        />
+      ))}
+      <line x1="39" y1="124" x2="39" y2="178" stroke="#4A4550" strokeWidth="1" opacity="0.6" />
+      <rect x="35.5" y="180" width="19" height="11" rx="4" fill="#17141A" />
+      <circle cx="45" cy="185.5" r="3" fill="var(--primary)" opacity="0.9" />
     </svg>
   );
 }

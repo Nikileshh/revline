@@ -1,7 +1,14 @@
 "use client";
 
 import { useEffect, useState, type ComponentType } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
+  type MotionValue,
+} from "motion/react";
 
 import {
   Basketball,
@@ -29,44 +36,89 @@ interface DriftItem {
   size: number; // px
   xPath: number[];
   yPath: number[];
-  rotPath: number[];
   duration: number;
   delay: number;
   opacity: number;
   blurred: boolean;
+  parallax: number; // px the item travels over a full page scroll
+  spin: number; // deg the item rotates over a full page scroll
+  baseRot: number;
 }
 
 const rand = (min: number, max: number) => min + Math.random() * (max - min);
 
 function buildItems(): DriftItem[] {
   return GEAR.map((_, i) => {
-    const ax = rand(40, 110);
-    const ay = rand(50, 130);
-    const baseRot = rand(-30, 30);
+    const ax = rand(30, 90);
     return {
       gear: i,
       left: rand(2, 90),
       top: rand(6, 88),
-      size: rand(38, 78),
-      xPath: [0, rand(-ax, ax), rand(-ax, ax), rand(-ax, ax)],
-      yPath: [0, -rand(20, ay), rand(-20, ay), -rand(10, ay)],
-      rotPath: [baseRot, baseRot + rand(-25, 25), baseRot + rand(-25, 25), baseRot],
-      duration: rand(28, 55),
-      delay: rand(0, 8),
-      opacity: rand(0.35, 0.6),
-      blurred: Math.random() < 0.35,
+      size: rand(42, 88),
+      xPath: [0, rand(-ax, ax), rand(-ax, ax), 0],
+      yPath: [0, -rand(15, 50), rand(-15, 50), 0],
+      duration: rand(26, 48),
+      delay: rand(0, 6),
+      opacity: rand(0.4, 0.65),
+      blurred: Math.random() < 0.3,
+      parallax: rand(-320, 320),
+      spin: rand(-200, 200),
+      baseRot: rand(-30, 30),
     };
   });
 }
 
+function DriftingGear({
+  item,
+  progress,
+}: {
+  item: DriftItem;
+  progress: MotionValue<number>;
+}) {
+  const reduce = useReducedMotion();
+  // Scroll-driven layer: parallax rise/fall + slow spin as the page moves
+  const y = useTransform(progress, [0, 1], [0, item.parallax]);
+  const rotate = useTransform(progress, [0, 1], [item.baseRot, item.baseRot + item.spin]);
+  const Gear = GEAR[item.gear];
+
+  return (
+    <motion.div
+      className={`absolute ${item.blurred ? "blur-[2px]" : ""}`}
+      style={{
+        left: `${item.left}%`,
+        top: `${item.top}%`,
+        width: item.size,
+        opacity: item.opacity,
+        y: reduce ? 0 : y,
+        rotate: reduce ? item.baseRot : rotate,
+      }}
+    >
+      {/* Idle drift layered under the scroll response */}
+      <motion.div
+        animate={reduce ? undefined : { x: item.xPath, y: item.yPath }}
+        transition={{
+          duration: item.duration,
+          delay: item.delay,
+          repeat: Infinity,
+          repeatType: "mirror",
+          ease: "easeInOut",
+        }}
+      >
+        <Gear className="h-auto w-full drop-shadow-[0_16px_22px_rgba(0,0,0,0.55)]" />
+      </motion.div>
+    </motion.div>
+  );
+}
+
 /**
- * Ambient layer: shaded sports gear drifting on random slow paths across the
- * whole page, behind the content. Randomized per visit, client-only so SSR
- * markup stays stable.
+ * Ambient layer: sports gear drifting on random slow paths behind the page,
+ * with scroll-linked parallax and rotation so the whole site reacts to
+ * scrolling. Randomized per visit; rendered client-only so SSR stays stable.
  */
 export function FloatingSports() {
-  const reduce = useReducedMotion();
   const [items, setItems] = useState<DriftItem[] | null>(null);
+  const { scrollYProgress } = useScroll();
+  const progress = useSpring(scrollYProgress, { stiffness: 60, damping: 20, mass: 0.6 });
 
   useEffect(() => {
     setItems(buildItems());
@@ -76,39 +128,9 @@ export function FloatingSports() {
 
   return (
     <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-      {items.map((item, i) => {
-        const Gear = GEAR[item.gear];
-        return (
-          <motion.div
-            key={i}
-            className={`absolute ${item.blurred ? "blur-[2px]" : ""}`}
-            style={{
-              left: `${item.left}%`,
-              top: `${item.top}%`,
-              width: item.size,
-              opacity: item.opacity,
-            }}
-            animate={
-              reduce
-                ? undefined
-                : {
-                    x: item.xPath,
-                    y: item.yPath,
-                    rotate: item.rotPath,
-                  }
-            }
-            transition={{
-              duration: item.duration,
-              delay: item.delay,
-              repeat: Infinity,
-              repeatType: "mirror",
-              ease: "easeInOut",
-            }}
-          >
-            <Gear className="h-auto w-full drop-shadow-[0_16px_22px_rgba(0,0,0,0.55)]" />
-          </motion.div>
-        );
-      })}
+      {items.map((item, i) => (
+        <DriftingGear key={i} item={item} progress={progress} />
+      ))}
     </div>
   );
 }
