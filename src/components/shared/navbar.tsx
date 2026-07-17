@@ -19,9 +19,6 @@ export function Navbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
-  // The landing page hero ships its own navbar (glassmorphism spec)
-  if (pathname === "/") return null;
-
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-md">
       <nav

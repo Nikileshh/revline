@@ -2,78 +2,91 @@
 
 import { motion, useReducedMotion } from "motion/react";
 
-function Basketball({ className }: { className?: string }) {
+/* ------------------------------------------------------------------ */
+/* Equipment as rim-lit silhouettes — objects in arena shadow          */
+/* ------------------------------------------------------------------ */
+
+function BasketballSilhouette({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 100 100" className={className} aria-hidden>
-      <circle cx="50" cy="50" r="47" fill="#E0873F" />
+      <defs>
+        <linearGradient id="rim-bb" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.95" />
+          <stop offset="55%" stopColor="var(--primary)" stopOpacity="0.15" />
+          <stop offset="100%" stopColor="var(--primary)" stopOpacity="0" />
+        </linearGradient>
+        <radialGradient id="body-bb" cx="30%" cy="25%" r="90%">
+          <stop offset="0%" stopColor="#2a2023" />
+          <stop offset="100%" stopColor="#120e10" />
+        </radialGradient>
+      </defs>
+      <circle cx="50" cy="50" r="46" fill="url(#body-bb)" stroke="url(#rim-bb)" strokeWidth="2.5" />
       <path
-        d="M3 50h94M50 3v94M16 16c15 14 15 54 0 68M84 16c-15 14-15 54 0 68"
-        stroke="#AD5F22"
-        strokeWidth="3"
+        d="M4 50h92M50 4v92M17 17c14 13 14 53 0 66M83 17c-14 13-14 53 0 66"
+        stroke="#ffffff"
+        strokeWidth="1.5"
         fill="none"
         strokeLinecap="round"
+        opacity="0.08"
       />
-      <circle cx="50" cy="50" r="47" fill="none" stroke="#AD5F22" strokeWidth="2.5" />
+      <ellipse cx="34" cy="26" rx="14" ry="8" fill="var(--primary)" opacity="0.18" />
     </svg>
   );
 }
 
-function Football({ className }: { className?: string }) {
+function FootballSilhouette({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 100 100" className={className} aria-hidden>
-      <circle cx="50" cy="50" r="47" fill="#ffffff" stroke="#3A4A63" strokeWidth="2.5" />
-      <polygon points="50,32 66,44 60,62 40,62 34,44" fill="#2D3A52" />
+      <defs>
+        <linearGradient id="rim-fb" x1="1" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.5" />
+          <stop offset="45%" stopColor="var(--primary)" stopOpacity="0.25" />
+          <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
+        </linearGradient>
+        <radialGradient id="body-fb" cx="65%" cy="25%" r="90%">
+          <stop offset="0%" stopColor="#2b2b31" />
+          <stop offset="100%" stopColor="#101014" />
+        </radialGradient>
+      </defs>
+      <circle cx="50" cy="50" r="46" fill="url(#body-fb)" stroke="url(#rim-fb)" strokeWidth="2.5" />
+      <polygon points="50,33 65,44 59,61 41,61 35,44" fill="#000000" opacity="0.55" />
       <path
-        d="M50 32V15M66 44l16-7M60 62l11 14M40 62L29 76M34 44l-16-7"
-        stroke="#2D3A52"
-        strokeWidth="2.5"
+        d="M50 33V17M65 44l15-6M59 61l10 13M41 61L31 74M35 44l-15-6"
+        stroke="#000000"
+        strokeWidth="2"
         strokeLinecap="round"
+        opacity="0.5"
       />
+      <ellipse cx="63" cy="27" rx="13" ry="8" fill="#ffffff" opacity="0.12" />
     </svg>
   );
 }
 
-function TennisRacquet({ className }: { className?: string }) {
+function RacquetSilhouette({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 60 122" className={className} aria-hidden>
-      <ellipse cx="30" cy="32" rx="23" ry="29" fill="rgba(255,255,255,0.75)" stroke="#2D3A52" strokeWidth="4" />
+      <defs>
+        <linearGradient id="rim-rq" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.9" />
+          <stop offset="100%" stopColor="var(--primary)" stopOpacity="0.05" />
+        </linearGradient>
+      </defs>
+      <ellipse cx="30" cy="32" rx="23" ry="29" fill="#131015" stroke="url(#rim-rq)" strokeWidth="4" />
       <path
         d="M14 18v28M22 12v40M30 10v44M38 12v40M46 18v28M10 24h40M8 34h44M10 44h40M14 52h32"
-        stroke="#2D3A52"
-        strokeWidth="1"
-        opacity="0.45"
+        stroke="#ffffff"
+        strokeWidth="0.7"
+        opacity="0.07"
       />
-      <path d="M23 59l4 16M37 59l-4 16" stroke="#2D3A52" strokeWidth="4" strokeLinecap="round" />
-      <rect x="25" y="74" width="10" height="40" rx="5" fill="#8E3B45" />
+      <path d="M23 59l4 16M37 59l-4 16" stroke="#1c161a" strokeWidth="4" strokeLinecap="round" />
+      <rect x="25" y="74" width="10" height="40" rx="5" fill="#1c161a" stroke="var(--primary)" strokeWidth="1.2" strokeOpacity="0.5" />
     </svg>
   );
 }
 
-function Shuttlecock({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 80 100" className={className} aria-hidden>
-      <path d="M28 70 L12 16 L68 16 L52 70 Z" fill="rgba(255,255,255,0.85)" stroke="#3A4A63" strokeWidth="2.5" strokeLinejoin="round" />
-      <path d="M40 70V16M31 70L21 16M49 70l10-54" stroke="#3A4A63" strokeWidth="1.5" opacity="0.6" />
-      <path d="M18 36h44M23 52h34" stroke="#3A4A63" strokeWidth="1.5" opacity="0.6" />
-      <circle cx="40" cy="80" r="12" fill="#F4E9DA" stroke="#C9B18C" strokeWidth="2.5" />
-    </svg>
-  );
-}
-
-function BaseballBat({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 40 140" className={className} aria-hidden>
-      <path
-        d="M20 5c11 0 12 34 7 66-2 14-3 26-3 40h-8c0-14-1-26-3-40C8 39 9 5 20 5Z"
-        fill="#C89B6B"
-        stroke="#9A7145"
-        strokeWidth="2.5"
-        strokeLinejoin="round"
-      />
-      <ellipse cx="20" cy="116" rx="9" ry="5.5" fill="#9A7145" />
-    </svg>
-  );
-}
+/* ------------------------------------------------------------------ */
+/* Atmosphere                                                          */
+/* ------------------------------------------------------------------ */
 
 interface FloatProps {
   children: React.ReactNode;
@@ -84,7 +97,8 @@ interface FloatProps {
   drift?: number;
 }
 
-function Float({ children, className, rotate = 0, duration = 7, delay = 0, drift = 14 }: FloatProps) {
+/** Slow, heavy drift — objects hanging in still air, not bouncing. */
+function Float({ children, className, rotate = 0, duration = 14, delay = 0, drift = 16 }: FloatProps) {
   const reduce = useReducedMotion();
   return (
     <motion.div
@@ -93,7 +107,7 @@ function Float({ children, className, rotate = 0, duration = 7, delay = 0, drift
       animate={
         reduce
           ? undefined
-          : { y: [0, -drift, 0], rotate: [rotate - 2, rotate + 2, rotate - 2] }
+          : { y: [0, -drift, 0], rotate: [rotate - 1.5, rotate + 1.5, rotate - 1.5] }
       }
       transition={{ duration, delay, repeat: Infinity, ease: "easeInOut" }}
       aria-hidden
@@ -103,39 +117,151 @@ function Float({ children, className, rotate = 0, duration = 7, delay = 0, drift
   );
 }
 
+const DUST = [
+  { left: "16%", top: "58%", size: 2, duration: 13, delay: 0 },
+  { left: "27%", top: "76%", size: 2, duration: 16, delay: 3 },
+  { left: "44%", top: "64%", size: 1.5, duration: 14, delay: 6 },
+  { left: "58%", top: "80%", size: 2, duration: 17, delay: 1 },
+  { left: "71%", top: "62%", size: 1.5, duration: 15, delay: 5 },
+  { left: "84%", top: "74%", size: 2, duration: 14, delay: 8 },
+] as const;
+
+function Dust() {
+  const reduce = useReducedMotion();
+  if (reduce) return null;
+  return (
+    <>
+      {DUST.map((d, i) => (
+        <motion.span
+          key={i}
+          className="absolute rounded-full bg-white"
+          style={{ left: d.left, top: d.top, width: d.size, height: d.size }}
+          animate={{ y: [0, -110], opacity: [0, 0.3, 0] }}
+          transition={{ duration: d.duration, delay: d.delay, repeat: Infinity, ease: "linear" }}
+          aria-hidden
+        />
+      ))}
+    </>
+  );
+}
+
+/** A soft volumetric floodlight beam. */
+function Beam({
+  className,
+  delay = 0,
+}: {
+  className?: string;
+  delay?: number;
+}) {
+  const reduce = useReducedMotion();
+  return (
+    <motion.div
+      className={className}
+      animate={reduce ? undefined : { opacity: [0.55, 0.9, 0.55] }}
+      transition={{ duration: 9, delay, repeat: Infinity, ease: "easeInOut" }}
+      aria-hidden
+    />
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* The scene                                                           */
+/* ------------------------------------------------------------------ */
+
 /**
- * Light glassmorphism backdrop for the hero: soft gradient field with court
- * markings and floating sports equipment (stands in for the spec's video).
+ * Cinematic arena: black frame cut by maroon floodlight beams and haze,
+ * equipment hanging as rim-lit silhouettes, dust in the light, film grain
+ * and a heavy vignette. Built to keep white type razor-legible.
  */
 export function SportsScene() {
+  const reduce = useReducedMotion();
+
   return (
-    <div className="absolute inset-0 z-0 overflow-hidden bg-gradient-to-br from-[#f2f4f8] via-[#f7f3ec] to-[#e9efe9]">
-      {/* Soft color blobs */}
-      <div className="absolute -left-24 top-1/4 size-96 rounded-full bg-[rgba(30,50,90,0.10)] blur-3xl" />
-      <div className="absolute -right-20 top-1/2 size-96 rounded-full bg-[rgba(142,59,69,0.10)] blur-3xl" />
-      <div className="absolute bottom-0 left-1/3 size-80 rounded-full bg-[rgba(70,120,80,0.10)] blur-3xl" />
+    <div className="absolute inset-0 z-0 overflow-hidden bg-[#0a0708]">
+      {/* Slow push-in (ken burns) */}
+      <motion.div
+        className="absolute inset-0"
+        animate={reduce ? undefined : { scale: [1, 1.05, 1] }}
+        transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
+      >
+        {/* Overhead key light + maroon wash */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_38%_at_50%_-8%,rgba(255,255,255,0.10),transparent)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_55%_at_50%_115%,color-mix(in_oklab,var(--primary)_45%,transparent),transparent_70%)]" />
 
-      {/* Court markings */}
-      <div className="absolute -bottom-56 left-1/2 size-[620px] -translate-x-1/2 rounded-full border-[3px] border-white/70" />
-      <div className="absolute -bottom-56 left-1/2 size-[380px] -translate-x-1/2 rounded-full border-[3px] border-white/50" />
-      <div className="absolute inset-x-0 bottom-40 border-t-2 border-white/50" />
+        {/* Floodlight beams */}
+        <Beam className="absolute -top-1/4 left-[6%] h-[150%] w-[26%] rotate-[16deg] bg-gradient-to-b from-[color-mix(in_oklab,var(--primary)_38%,transparent)] via-[color-mix(in_oklab,var(--primary)_10%,transparent)] to-transparent blur-2xl" />
+        <Beam
+          className="absolute -top-1/4 right-[8%] h-[150%] w-[24%] -rotate-[14deg] bg-gradient-to-b from-[color-mix(in_oklab,var(--primary)_30%,transparent)] via-transparent to-transparent blur-2xl"
+          delay={3}
+        />
+        <Beam
+          className="absolute -top-1/3 left-[38%] h-[160%] w-[22%] rotate-[2deg] bg-gradient-to-b from-white/[0.09] via-transparent to-transparent blur-2xl"
+          delay={5}
+        />
 
-      {/* Floating equipment */}
-      <Float className="absolute left-[5%] top-[16%] w-14 sm:w-16 md:w-20" rotate={-18} duration={7.5}>
-        <Shuttlecock className="h-auto w-full drop-shadow-lg" />
-      </Float>
-      <Float className="absolute bottom-[30%] left-[8%] w-20 sm:w-24 md:w-28 lg:w-32" rotate={8} duration={8.5} delay={0.8}>
-        <Basketball className="h-auto w-full drop-shadow-xl" />
-      </Float>
-      <Float className="absolute right-[6%] top-[13%] w-14 sm:w-16 md:w-24" rotate={24} duration={7} delay={0.4}>
-        <TennisRacquet className="h-auto w-full drop-shadow-lg" />
-      </Float>
-      <Float className="absolute bottom-[32%] right-[9%] w-16 sm:w-20 md:w-24 lg:w-28" rotate={-10} duration={9} delay={1.2}>
-        <Football className="h-auto w-full drop-shadow-xl" />
-      </Float>
-      <Float className="hidden md:block absolute left-[26%] top-[7%] w-8 lg:w-10" rotate={38} duration={8} delay={1.6} drift={10}>
-        <BaseballBat className="h-auto w-full drop-shadow-lg" />
-      </Float>
+        {/* Drifting haze */}
+        <motion.div
+          className="absolute bottom-[8%] left-[10%] h-64 w-[55%] rounded-full bg-[color-mix(in_oklab,var(--primary)_18%,transparent)] blur-3xl"
+          animate={reduce ? undefined : { x: [0, 60, 0] }}
+          transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
+          aria-hidden
+        />
+        <motion.div
+          className="absolute bottom-[20%] right-[5%] h-56 w-[45%] rounded-full bg-white/[0.05] blur-3xl"
+          animate={reduce ? undefined : { x: [0, -50, 0] }}
+          transition={{ duration: 26, delay: 4, repeat: Infinity, ease: "easeInOut" }}
+          aria-hidden
+        />
+
+        {/* Track lines, barely lit */}
+        <div className="absolute -bottom-72 left-1/2 size-[760px] -translate-x-1/2 rounded-full border-2 border-white/[0.06]" />
+        <div className="absolute -bottom-72 left-1/2 size-[470px] -translate-x-1/2 rounded-full border-2 border-[color-mix(in_oklab,var(--primary)_35%,transparent)] opacity-30" />
+
+        {/* Equipment in the shadows */}
+        <Float
+          className="absolute left-[4%] bottom-[24%] w-28 opacity-90 drop-shadow-[0_30px_35px_rgba(0,0,0,0.8)] sm:w-32 md:w-44 lg:w-52"
+          rotate={10}
+          duration={15}
+          delay={0.6}
+          drift={20}
+        >
+          <BasketballSilhouette className="h-auto w-full" />
+        </Float>
+        <Float
+          className="absolute right-[5%] bottom-[26%] w-24 opacity-90 drop-shadow-[0_30px_35px_rgba(0,0,0,0.8)] sm:w-28 md:w-36 lg:w-40"
+          rotate={-8}
+          duration={16}
+          delay={1.4}
+          drift={18}
+        >
+          <FootballSilhouette className="h-auto w-full" />
+        </Float>
+        <Float
+          className="absolute right-[16%] top-[9%] w-14 opacity-60 blur-[1.5px] md:w-20 lg:w-24"
+          rotate={26}
+          duration={17}
+          delay={0.2}
+        >
+          <RacquetSilhouette className="h-auto w-full" />
+        </Float>
+
+        <Dust />
+      </motion.div>
+
+      {/* Slow anamorphic light sweep */}
+      {!reduce && (
+        <motion.div
+          className="absolute inset-y-0 w-[40%] rotate-12 bg-gradient-to-r from-transparent via-white/[0.045] to-transparent"
+          initial={{ left: "-55%" }}
+          animate={{ left: "125%" }}
+          transition={{ duration: 13, repeat: Infinity, ease: "easeInOut", repeatDelay: 4 }}
+          aria-hidden
+        />
+      )}
+
+      {/* Film layer: vignette then grain */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_45%,rgba(0,0,0,0.65))]" />
+      <div className="film-grain absolute inset-0 opacity-[0.06] mix-blend-overlay" />
     </div>
   );
 }

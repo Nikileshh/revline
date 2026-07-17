@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 
 import { SportsHero } from "@/components/home/sports-hero";
-import { EventCardLight } from "@/components/events/event-card-light";
+import { EventCard } from "@/components/events/event-card";
 import { Reveal } from "@/components/shared/reveal";
 import {
   getConfirmedCount,
@@ -55,25 +55,23 @@ export default async function HomePage() {
   const counts = await Promise.all(nextEvents.map((e) => getConfirmedCount(e.id)));
 
   return (
-    <div className="bg-[#f0f0f0] text-[rgba(30,50,90,0.9)]">
+    <>
       <SportsHero
         instagramUrl={settings.instagram_url}
         whatsappUrl={settings.whatsapp_community_url}
         memberCount={memberCount}
       />
 
-      {/* Sports ticker */}
-      <div className="border-y border-white/60 bg-white/40 py-4 backdrop-blur" aria-hidden>
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-8 gap-y-2 px-4 sm:px-6">
-          {SPORTS.map((sport, i) => (
+      {/* Sports marquee */}
+      <div className="overflow-hidden border-y border-white/10 bg-white/[0.03] py-4" aria-hidden>
+        <div className="animate-marquee flex w-max items-center gap-10">
+          {[...SPORTS, ...SPORTS].map((sport, i) => (
             <span
-              key={sport}
-              className="flex items-center gap-8 text-lg font-normal uppercase tracking-[0.15em] text-[rgba(30,50,90,0.55)]"
+              key={`${sport}-${i}`}
+              className="flex items-center gap-10 font-display text-xl font-bold uppercase italic tracking-[0.15em] text-white/40"
             >
               {sport}
-              {i < SPORTS.length - 1 && (
-                <span className="size-1.5 rounded-full bg-[rgba(142,59,69,0.5)]" />
-              )}
+              <span className="size-2 rounded-full bg-primary/70" />
             </span>
           ))}
         </div>
@@ -84,14 +82,14 @@ export default async function HomePage() {
         <Reveal>
           <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[rgba(142,59,69,0.85)]">
+              <p className="text-xs font-bold uppercase tracking-[0.25em] text-primary">
                 Why RevLine exists
               </p>
-              <h2 className="mt-3 text-balance text-4xl font-normal leading-tight tracking-tight text-[rgba(30,50,90,0.95)] sm:text-5xl">
+              <h2 className="mt-3 text-balance font-display text-5xl font-bold uppercase leading-[1.02] tracking-wide text-white sm:text-6xl">
                 We were looking for more than solo workouts.
               </h2>
             </div>
-            <div className="flex flex-col justify-center gap-4 text-base leading-relaxed text-[#5E6470] sm:text-lg">
+            <div className="flex flex-col justify-center gap-4 text-base leading-relaxed text-white/70 sm:text-lg">
               <p>
                 We wanted a space where people come together to train, grow, and support
                 each other — a community built on consistency, strength, and shared energy.
@@ -107,14 +105,14 @@ export default async function HomePage() {
         <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {PILLARS.map((pillar, i) => (
             <Reveal key={pillar.title} delay={i * 0.08}>
-              <div className="h-full rounded-[1.5rem] border border-white/50 bg-white/60 p-6 backdrop-blur-xl">
-                <span className="flex size-11 items-center justify-center rounded-full border border-[rgba(30,50,90,0.1)] bg-[rgba(30,50,90,0.06)] text-[rgba(30,50,90,0.8)]">
+              <div className="group h-full rounded-2xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur transition-all hover:-translate-y-1 hover:border-primary/50 hover:shadow-[0_10px_50px_color-mix(in_oklab,var(--primary)_25%,transparent)] motion-reduce:transition-none motion-reduce:hover:translate-y-0">
+                <span className="flex size-12 items-center justify-center rounded-xl border border-primary/40 bg-primary/15 text-primary">
                   <pillar.icon className="size-5" aria-hidden />
                 </span>
-                <h3 className="mt-4 text-2xl font-normal tracking-tight text-[rgba(30,50,90,0.95)]">
+                <h3 className="mt-4 font-display text-2xl font-bold uppercase tracking-wide text-white">
                   {pillar.title}
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-[#5E6470]">
+                <p className="mt-2 text-sm leading-relaxed text-white/65">
                   {pillar.body}
                 </p>
               </div>
@@ -124,21 +122,21 @@ export default async function HomePage() {
       </section>
 
       {/* Upcoming events */}
-      <section className="border-y border-white/60 bg-white/30 backdrop-blur-sm">
+      <section className="border-y border-white/10 bg-white/[0.02]">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-24">
           <Reveal>
             <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[rgba(142,59,69,0.85)]">
+                <p className="text-xs font-bold uppercase tracking-[0.25em] text-primary">
                   This weekend &amp; beyond
                 </p>
-                <h2 className="mt-3 text-4xl font-normal tracking-tight text-[rgba(30,50,90,0.95)] sm:text-5xl">
+                <h2 className="mt-3 font-display text-5xl font-bold uppercase tracking-wide text-white sm:text-6xl">
                   Upcoming sessions
                 </h2>
               </div>
               <Link
                 href="/events"
-                className="group flex w-fit items-center gap-2 rounded-full border border-[rgba(30,50,90,0.2)] bg-white/60 px-5 py-2 text-sm font-normal text-[rgba(30,50,90,0.9)] backdrop-blur transition-colors hover:bg-white"
+                className="group flex w-fit items-center gap-2 rounded-full border border-white/20 bg-white/[0.05] px-6 py-2.5 text-sm font-bold uppercase tracking-wide text-white transition-colors hover:border-primary hover:text-primary"
               >
                 All events
                 <ArrowRight
@@ -153,18 +151,18 @@ export default async function HomePage() {
             <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {nextEvents.map((event, i) => (
                 <Reveal key={event.id} delay={i * 0.08}>
-                  <EventCardLight event={event} confirmedCount={counts[i]} />
+                  <EventCard event={event} confirmedCount={counts[i]} />
                 </Reveal>
               ))}
             </div>
           ) : (
             <Reveal>
-              <div className="mt-10 rounded-[1.5rem] border border-dashed border-[rgba(30,50,90,0.2)] bg-white/40 p-12 text-center backdrop-blur">
-                <Sparkles className="mx-auto size-8 text-[rgba(30,50,90,0.5)]" aria-hidden />
-                <p className="mt-4 font-medium text-[rgba(30,50,90,0.9)]">
+              <div className="mt-10 rounded-2xl border border-dashed border-white/15 p-12 text-center">
+                <Sparkles className="mx-auto size-8 text-primary" aria-hidden />
+                <p className="mt-4 font-display text-xl font-bold uppercase tracking-wide text-white">
                   Next session dropping soon
                 </p>
-                <p className="mt-1 text-sm text-[#5E6470]">
+                <p className="mt-1 text-sm text-white/60">
                   Follow us on Instagram or join the WhatsApp community to hear first.
                 </p>
               </div>
@@ -177,24 +175,24 @@ export default async function HomePage() {
       {testimonials.length > 0 && (
         <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28">
           <Reveal>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[rgba(142,59,69,0.85)]">
+            <p className="text-xs font-bold uppercase tracking-[0.25em] text-primary">
               From the crew
             </p>
-            <h2 className="mt-3 text-4xl font-normal tracking-tight text-[rgba(30,50,90,0.95)] sm:text-5xl">
+            <h2 className="mt-3 font-display text-5xl font-bold uppercase tracking-wide text-white sm:text-6xl">
               What members say
             </h2>
           </Reveal>
           <div className="mt-10 grid gap-5 md:grid-cols-3">
             {testimonials.slice(0, 3).map((t, i) => (
               <Reveal key={t.id} delay={i * 0.08}>
-                <figure className="flex h-full flex-col rounded-[1.5rem] border border-white/50 bg-white/60 p-6 backdrop-blur-xl">
-                  <Quote className="size-5 text-[rgba(142,59,69,0.8)]" aria-hidden />
-                  <blockquote className="mt-4 flex-1 text-sm leading-relaxed text-[#4b5261]">
+                <figure className="flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur transition-colors hover:border-primary/40">
+                  <Quote className="size-5 text-primary" aria-hidden />
+                  <blockquote className="mt-4 flex-1 text-sm leading-relaxed text-white/80">
                     &ldquo;{t.quote}&rdquo;
                   </blockquote>
                   <figcaption className="mt-5 text-sm">
-                    <span className="font-semibold text-[rgba(30,50,90,0.95)]">{t.name}</span>
-                    {t.label && <span className="text-[#5E6470]"> · {t.label}</span>}
+                    <span className="font-semibold text-white">{t.name}</span>
+                    {t.label && <span className="text-white/55"> · {t.label}</span>}
                   </figcaption>
                 </figure>
               </Reveal>
@@ -206,32 +204,35 @@ export default async function HomePage() {
       {/* WhatsApp CTA */}
       <section className="mx-auto max-w-6xl px-4 pb-24 sm:px-6">
         <Reveal>
-          <div className="relative overflow-hidden rounded-[2rem] bg-[rgba(30,50,90,0.92)] p-10 text-center text-white sm:p-16">
-            <div className="pointer-events-none absolute -right-20 -top-20 size-72 rounded-full bg-white/10 blur-3xl" />
-            <div className="pointer-events-none absolute -bottom-24 -left-16 size-72 rounded-full bg-[rgba(142,59,69,0.35)] blur-3xl" />
-            <h2 className="text-balance text-4xl font-normal tracking-tight sm:text-5xl">
+          <div className="relative overflow-hidden rounded-[2rem] border border-primary/40 bg-gradient-to-br from-primary/30 via-card to-background p-10 text-center sm:p-16">
+            <div className="pointer-events-none absolute -right-24 -top-24 size-80 rounded-full bg-primary/25 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-28 -left-20 size-80 rounded-full bg-primary/20 blur-3xl" />
+            <div className="film-grain pointer-events-none absolute inset-0 opacity-[0.05] mix-blend-overlay" />
+            <h2 className="relative text-balance font-display text-5xl font-bold uppercase italic tracking-wide text-white sm:text-6xl">
               Ready to join the movement?
             </h2>
-            <p className="mx-auto mt-4 max-w-xl text-balance text-white/70">
+            <p className="relative mx-auto mt-4 max-w-xl text-balance text-white/75">
               If you&apos;re ready to move, grow, and commit — register for a session or
               jump straight into the community chat.
             </p>
-            <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <div className="relative mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Link
                 href="/events"
-                className="group flex items-center gap-3 rounded-full bg-white py-2 pl-2 pr-6 text-[rgba(30,50,90,0.95)] transition-colors hover:bg-white/90"
+                className="flex h-12 items-center gap-3 rounded-full bg-primary pl-2 pr-7 text-white shadow-[0_0_45px_color-mix(in_oklab,var(--primary)_50%,transparent)] transition-colors hover:bg-[color-mix(in_oklab,var(--primary)_85%,white)]"
               >
-                <span className="flex items-center justify-center rounded-full bg-[rgba(30,50,90,0.1)] p-1.5">
+                <span className="flex items-center justify-center rounded-full bg-white/20 p-1.5">
                   <ArrowUpRight className="size-5" aria-hidden />
                 </span>
-                <span className="text-sm font-normal">Register for a session</span>
+                <span className="text-sm font-bold uppercase tracking-wide">
+                  Register for a session
+                </span>
               </Link>
               {settings.whatsapp_community_url && (
                 <a
                   href={settings.whatsapp_community_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-6 py-2.5 text-sm font-normal text-white backdrop-blur transition-colors hover:bg-white/20"
+                  className="flex h-12 items-center gap-2 rounded-full border border-white/25 bg-white/[0.07] px-7 text-sm font-bold uppercase tracking-wide text-white backdrop-blur transition-colors hover:border-white/50 hover:bg-white/15"
                 >
                   <MessageCircle className="size-4" aria-hidden />
                   Join the WhatsApp community
@@ -241,6 +242,6 @@ export default async function HomePage() {
           </div>
         </Reveal>
       </section>
-    </div>
+    </>
   );
 }

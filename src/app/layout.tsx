@@ -56,6 +56,11 @@ export default function RootLayout({
     >
       <body className="flex min-h-full flex-col">
         {children}
+        {/* Cinematic film grain over every page */}
+        <div
+          aria-hidden
+          className="film-grain pointer-events-none fixed inset-0 z-[70] opacity-[0.04] mix-blend-overlay"
+        />
         <Toaster position="top-center" richColors />
       </body>
     </html>

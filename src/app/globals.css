@@ -50,22 +50,22 @@
 }
 
 /* RevLine is dark-only: one palette, applied at :root and mirrored on .dark
-   Brand: black backgrounds, neutral grey surfaces, maroon accent */
+   Brand: cinematic black, smoky greys, maroon as the leading color */
 :root,
 .dark {
-  --background: oklch(0.13 0 0);
+  --background: oklch(0.12 0.008 16);
   --foreground: oklch(0.96 0 0);
-  --card: oklch(0.17 0.005 20);
+  --card: oklch(0.16 0.012 16);
   --card-foreground: oklch(0.96 0 0);
-  --popover: oklch(0.17 0.005 20);
+  --popover: oklch(0.16 0.012 16);
   --popover-foreground: oklch(0.96 0 0);
-  --primary: oklch(0.52 0.15 16);
+  --primary: oklch(0.55 0.17 16);
   --primary-foreground: oklch(0.98 0.01 20);
-  --secondary: oklch(0.24 0 0);
+  --secondary: oklch(0.23 0.01 16);
   --secondary-foreground: oklch(0.92 0 0);
-  --muted: oklch(0.22 0 0);
-  --muted-foreground: oklch(0.72 0 0);
-  --accent: oklch(0.27 0.03 16);
+  --muted: oklch(0.21 0.008 16);
+  --muted-foreground: oklch(0.72 0.008 16);
+  --accent: oklch(0.26 0.04 16);
   --accent-foreground: oklch(0.96 0 0);
   --destructive: oklch(0.62 0.21 28);
   --border: oklch(1 0 0 / 12%);
@@ -108,6 +108,41 @@
   }
 }
 
+/* Cinematic film grain — animated noise overlay, kept very faint */
+.film-grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+  animation: grain-shift 0.9s steps(4) infinite;
+}
+
+@keyframes grain-shift {
+  0% {
+    background-position: 0 0;
+  }
+  25% {
+    background-position: -45px 30px;
+  }
+  50% {
+    background-position: 30px -60px;
+  }
+  75% {
+    background-position: -60px -20px;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+
+/* Slow sports-name marquee on the landing page */
+.animate-marquee {
+  animation: marquee 32s linear infinite;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
 /* 2-frame run cycle for the login-page runner: the two pose groups
    alternate visibility in opposite phase */
 @keyframes runner-cycle {
@@ -138,5 +173,11 @@
   }
   .runner-frame-b {
     opacity: 0;
+  }
+  .film-grain {
+    animation: none;
+  }
+  .animate-marquee {
+    animation: none;
   }
 }
