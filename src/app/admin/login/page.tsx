@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2, Lock, Zap } from "lucide-react";
+import { motion, useReducedMotion } from "motion/react";
+import { Loader2, Lock } from "lucide-react";
 
+import { RunnerWordmark } from "@/components/shared/runner-wordmark";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,6 +13,7 @@ import { supabaseBrowser } from "@/lib/supabase/client";
 
 export default function AdminLoginPage() {
   const router = useRouter();
+  const reduce = useReducedMotion();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -44,16 +47,15 @@ export default function AdminLoginPage() {
     <main className="flex min-h-screen items-center justify-center px-4">
       <div className="w-full max-w-sm">
         <div className="mb-8 flex flex-col items-center text-center">
-          <span className="flex size-12 items-center justify-center rounded-xl bg-primary">
-            <Zap className="size-6 text-primary-foreground" aria-hidden />
-          </span>
-          <h1 className="mt-4 font-display text-3xl font-bold uppercase italic tracking-wide">
-            RevLine Admin
-          </h1>
-          <p className="mt-1 text-sm text-muted-foreground">Crew access only</p>
+          <h1 className="sr-only">RevLine Admin</h1>
+          <RunnerWordmark />
+          <p className="mt-1 text-sm text-muted-foreground">Admin · crew access only</p>
         </div>
 
-        <form
+        <motion.form
+          initial={reduce ? false : { opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: reduce ? 0 : 1.6, duration: 0.5, ease: [0.21, 0.47, 0.32, 0.98] }}
           onSubmit={handleSubmit}
           className="space-y-5 rounded-2xl border border-border bg-card p-6"
         >
@@ -101,7 +103,7 @@ export default function AdminLoginPage() {
               </>
             )}
           </Button>
-        </form>
+        </motion.form>
       </div>
     </main>
   );

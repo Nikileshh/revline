@@ -23,6 +23,28 @@ export const SPORT_LABELS: Record<Sport, string> = {
   other: "Session",
 };
 
+export type Intensity = "easy" | "moderate" | "intense";
+
+export const INTENSITY_LABELS: Record<Intensity, string> = {
+  easy: "Easy",
+  moderate: "Moderate",
+  intense: "Intense",
+};
+
+export const GENDER_OPTIONS = ["Male", "Female", "Other", "Prefer not to say"] as const;
+
+export const BLOOD_GROUPS = [
+  "A+",
+  "A-",
+  "B+",
+  "B-",
+  "O+",
+  "O-",
+  "AB+",
+  "AB-",
+  "Not sure",
+] as const;
+
 export interface EventQuestion {
   id: string;
   label: string;
@@ -46,6 +68,9 @@ export interface CommunityEvent {
   whatsapp_group_url: string | null;
   poster_url: string | null;
   status: EventStatus;
+  intensity: Intensity | null;
+  distance: string | null;
+  what_to_bring: string | null;
   drive_link: string | null;
   registration_open: boolean;
   questions: EventQuestion[];
@@ -61,6 +86,9 @@ export interface Registration {
   age: number;
   phone: string;
   email: string | null;
+  gender: string | null;
+  blood_group: string | null;
+  emergency_contact: string | null;
   answers: Record<string, string>;
   status: RegistrationStatus;
   created_at: string;
@@ -117,6 +145,17 @@ export const registrationSchema = z.object({
     .string()
     .trim()
     .email("Please enter a valid email")
+    .or(z.literal(""))
+    .transform((v) => (v === "" ? null : v)),
+  gender: z.string().trim().min(1, "Please select your gender").max(30),
+  emergency_contact: z
+    .string()
+    .trim()
+    .regex(/^[+]?[0-9][0-9\s-]{8,14}$/, "Enter a valid emergency contact number"),
+  blood_group: z
+    .string()
+    .trim()
+    .max(10)
     .or(z.literal(""))
     .transform((v) => (v === "" ? null : v)),
   answers: z.record(z.string(), z.string().trim().max(1000)),

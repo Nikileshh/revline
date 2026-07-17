@@ -4,13 +4,16 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
   ArrowRight,
+  Backpack,
   Calendar,
   Clock,
   ExternalLink,
+  Gauge,
   ImageIcon,
   IndianRupee,
   ListChecks,
   MapPin,
+  Route,
   Users,
 } from "lucide-react";
 
@@ -23,7 +26,7 @@ import {
   getEventBySlug,
   getEventPhotos,
 } from "@/server/queries";
-import { SPORT_LABELS } from "@/types";
+import { INTENSITY_LABELS, SPORT_LABELS } from "@/types";
 
 export const dynamic = "force-dynamic";
 
@@ -62,10 +65,13 @@ export default async function EventDetailPage({ params }: PageProps) {
   const isFull = spotsLeft === 0;
   const canRegister = isUpcoming && event.registration_open;
 
-  const rules = (event.rules ?? "")
-    .split("\n")
-    .map((line) => line.replace(/^[-•]\s*/, "").trim())
-    .filter(Boolean);
+  const toLines = (text: string | null) =>
+    (text ?? "")
+      .split("\n")
+      .map((line) => line.replace(/^[-•]\s*/, "").trim())
+      .filter(Boolean);
+  const rules = toLines(event.rules);
+  const whatToBring = toLines(event.what_to_bring);
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-14 sm:px-6 sm:py-18">
@@ -78,6 +84,12 @@ export default async function EventDetailPage({ params }: PageProps) {
 
       <div className="mt-6 flex flex-wrap items-center gap-2">
         <Badge variant="secondary">{SPORT_LABELS[event.sport]}</Badge>
+        {event.intensity && (
+          <Badge variant="outline" className="gap-1">
+            <Gauge className="size-3" aria-hidden />
+            {INTENSITY_LABELS[event.intensity]}
+          </Badge>
+        )}
         {event.status === "completed" && <Badge variant="outline">Completed</Badge>}
         {event.status === "cancelled" && <Badge variant="destructive">Cancelled</Badge>}
         {canRegister && spotsLeft !== null && (
@@ -136,6 +148,18 @@ export default async function EventDetailPage({ params }: PageProps) {
           <IndianRupee className="size-4 text-primary" aria-hidden />
           {formatPrice(event.price)}
         </p>
+        {event.distance && (
+          <p className="flex items-center gap-3 text-sm">
+            <Route className="size-4 text-primary" aria-hidden />
+            {event.distance}
+          </p>
+        )}
+        {event.intensity && (
+          <p className="flex items-center gap-3 text-sm">
+            <Gauge className="size-4 text-primary" aria-hidden />
+            {INTENSITY_LABELS[event.intensity]} intensity
+          </p>
+        )}
         {event.capacity !== null && (
           <p className="flex items-center gap-3 text-sm">
             <Users className="size-4 text-primary" aria-hidden />
@@ -164,6 +188,23 @@ export default async function EventDetailPage({ params }: PageProps) {
               <li key={rule} className="flex gap-3 text-sm leading-relaxed text-muted-foreground">
                 <span className="mt-[7px] size-1.5 shrink-0 rounded-full bg-primary" aria-hidden />
                 {rule}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {whatToBring.length > 0 && (
+        <section className="mt-10">
+          <h2 className="flex items-center gap-2 font-display text-2xl font-bold uppercase tracking-wide">
+            <Backpack className="size-5 text-primary" aria-hidden />
+            What to bring
+          </h2>
+          <ul className="mt-3 space-y-2">
+            {whatToBring.map((item) => (
+              <li key={item} className="flex gap-3 text-sm leading-relaxed text-muted-foreground">
+                <span className="mt-[7px] size-1.5 shrink-0 rounded-full bg-primary" aria-hidden />
+                {item}
               </li>
             ))}
           </ul>

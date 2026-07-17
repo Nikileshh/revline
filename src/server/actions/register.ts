@@ -30,7 +30,8 @@ export async function registerForEvent(
     return { ok: false, message: "Please fix the highlighted fields.", fieldErrors };
   }
 
-  const { eventId, name, age, phone, email, answers } = parsed.data;
+  const { eventId, name, age, phone, email, gender, emergency_contact, blood_group, answers } =
+    parsed.data;
   const db = supabaseAdmin();
 
   const { data: event, error: eventError } = await db
@@ -74,6 +75,9 @@ export async function registerForEvent(
     age,
     phone,
     email,
+    gender,
+    emergency_contact,
+    blood_group,
     answers,
     status,
   });
@@ -94,6 +98,9 @@ export async function registerForEvent(
     age,
     phone,
     email: email ?? "",
+    gender: gender ?? "",
+    emergency_contact: emergency_contact ?? "",
+    blood_group: blood_group ?? "",
     status,
     answers: event.questions
       .map((q) => `${q.label}: ${answers[q.id] ?? "-"}`)

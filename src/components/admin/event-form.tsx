@@ -20,10 +20,12 @@ import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { supabaseBrowser } from "@/lib/supabase/client";
 import {
+  INTENSITY_LABELS,
   SPORT_LABELS,
   type CommunityEvent,
   type EventQuestion,
   type EventStatus,
+  type Intensity,
   type Sport,
 } from "@/types";
 
@@ -42,6 +44,9 @@ interface Draft {
   event_date: string; // datetime-local value
   capacity: string;
   price: string;
+  intensity: Intensity | "none";
+  distance: string;
+  what_to_bring: string;
   whatsapp_group_url: string;
   drive_link: string;
   status: EventStatus;
@@ -81,6 +86,9 @@ export function EventForm({ event }: EventFormProps) {
     event_date: event ? toLocalInput(event.event_date) : "",
     capacity: event?.capacity?.toString() ?? "",
     price: event?.price?.toString() ?? "",
+    intensity: event?.intensity ?? "none",
+    distance: event?.distance ?? "",
+    what_to_bring: event?.what_to_bring ?? "",
     whatsapp_group_url: event?.whatsapp_group_url ?? "",
     drive_link: event?.drive_link ?? "",
     status: event?.status ?? "upcoming",
@@ -176,6 +184,9 @@ export function EventForm({ event }: EventFormProps) {
       event_date: new Date(draft.event_date).toISOString(),
       capacity: draft.capacity ? Number(draft.capacity) : null,
       price: draft.price ? Number(draft.price) : null,
+      intensity: draft.intensity === "none" ? null : draft.intensity,
+      distance: draft.distance.trim() || null,
+      what_to_bring: draft.what_to_bring.trim() || null,
       whatsapp_group_url: draft.whatsapp_group_url.trim() || null,
       drive_link: draft.drive_link.trim() || null,
       status: draft.status,
@@ -306,6 +317,36 @@ export function EventForm({ event }: EventFormProps) {
           </div>
 
           <div className="space-y-2">
+            <Label htmlFor="ev-intensity">Intensity</Label>
+            <Select
+              value={draft.intensity}
+              onValueChange={(v) => set("intensity", v as Intensity | "none")}
+            >
+              <SelectTrigger id="ev-intensity" className="w-full">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="none">Not specified</SelectItem>
+                {(Object.keys(INTENSITY_LABELS) as Intensity[]).map((i) => (
+                  <SelectItem key={i} value={i}>
+                    {INTENSITY_LABELS[i]}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="ev-distance">Distance / duration</Label>
+            <Input
+              id="ev-distance"
+              value={draft.distance}
+              onChange={(e) => set("distance", e.target.value)}
+              placeholder="e.g. 5 km or 90 min"
+            />
+          </div>
+
+          <div className="space-y-2">
             <Label htmlFor="ev-wa">Event WhatsApp group link</Label>
             <Input
               id="ev-wa"
@@ -366,6 +407,17 @@ export function EventForm({ event }: EventFormProps) {
             value={draft.rules}
             onChange={(e) => set("rules", e.target.value)}
             placeholder={"Wear turf shoes\nArrive 15 minutes early\nCarry water"}
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="ev-bring">What to bring (one per line)</Label>
+          <Textarea
+            id="ev-bring"
+            rows={3}
+            value={draft.what_to_bring}
+            onChange={(e) => set("what_to_bring", e.target.value)}
+            placeholder={"Running shoes\nWater bottle\nA towel"}
           />
         </div>
 

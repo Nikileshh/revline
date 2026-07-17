@@ -33,7 +33,10 @@ export function RegistrationsTable({
     const headers = [
       "Name",
       "Age",
+      "Gender",
       "Phone",
+      "Emergency contact",
+      "Blood group",
       "Email",
       "Status",
       "Registered at",
@@ -42,7 +45,10 @@ export function RegistrationsTable({
     const rows = registrations.map((r) => [
       r.name,
       String(r.age),
+      r.gender ?? "",
       r.phone,
+      r.emergency_contact ?? "",
+      r.blood_group ?? "",
       r.email ?? "",
       r.status,
       new Date(r.created_at).toLocaleString("en-IN"),
@@ -81,7 +87,10 @@ export function RegistrationsTable({
               <TableHead>#</TableHead>
               <TableHead>Name</TableHead>
               <TableHead>Age</TableHead>
+              <TableHead>Gender</TableHead>
               <TableHead>Phone</TableHead>
+              <TableHead>Emergency</TableHead>
+              <TableHead>Blood</TableHead>
               <TableHead>Status</TableHead>
               {questions.map((q) => (
                 <TableHead key={q.id}>{q.label}</TableHead>
@@ -99,7 +108,14 @@ export function RegistrationsTable({
                   )}
                 </TableCell>
                 <TableCell>{r.age}</TableCell>
+                <TableCell className="whitespace-nowrap text-muted-foreground">
+                  {r.gender ?? "—"}
+                </TableCell>
                 <TableCell className="whitespace-nowrap">{r.phone}</TableCell>
+                <TableCell className="whitespace-nowrap text-muted-foreground">
+                  {r.emergency_contact ?? "—"}
+                </TableCell>
+                <TableCell className="text-muted-foreground">{r.blood_group ?? "—"}</TableCell>
                 <TableCell>
                   <Badge variant={r.status === "confirmed" ? "default" : "outline"}>
                     {r.status}

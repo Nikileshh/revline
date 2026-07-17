@@ -1,7 +1,8 @@
 "use client";
 
+import { useRef } from "react";
 import Link from "next/link";
-import { motion, useReducedMotion } from "motion/react";
+import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { ArrowRight } from "lucide-react";
 
 import { InstagramIcon } from "@/components/shared/instagram-icon";
@@ -15,6 +16,16 @@ interface HeroProps {
 
 export function Hero({ instagramUrl }: HeroProps) {
   const reduce = useReducedMotion();
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+  // Parallax: content drifts up slower than the page and fades; glow lags behind
+  const contentY = useTransform(scrollYProgress, [0, 1], [0, 90]);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.75], [1, 0.15]);
+  const glowY = useTransform(scrollYProgress, [0, 1], [0, 160]);
+
   const anim = (delay: number) =>
     reduce
       ? {}
@@ -25,14 +36,17 @@ export function Hero({ instagramUrl }: HeroProps) {
         };
 
   return (
-    <section className="relative overflow-hidden">
-      {/* Gold glow */}
-      <div
+    <section ref={sectionRef} className="relative overflow-hidden">
+      {/* Maroon glow */}
+      <motion.div
         aria-hidden
+        style={reduce ? undefined : { y: glowY }}
         className="pointer-events-none absolute inset-x-0 top-0 h-[500px] bg-[radial-gradient(ellipse_60%_50%_at_50%_-10%,color-mix(in_oklab,var(--primary)_25%,transparent),transparent)]"
       />
 
-      <div className="mx-auto flex max-w-6xl flex-col items-center px-4 pb-20 pt-24 text-center sm:px-6 sm:pb-28 sm:pt-32">
+      <motion.div
+        style={reduce ? undefined : { y: contentY, opacity: contentOpacity }}
+        className="mx-auto flex max-w-6xl flex-col items-center px-4 pb-20 pt-24 text-center sm:px-6 sm:pb-28 sm:pt-32">
         <motion.p
           {...anim(0)}
           className="mb-6 rounded-full border border-border bg-card px-4 py-1.5 text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground"
@@ -72,7 +86,7 @@ export function Hero({ instagramUrl }: HeroProps) {
             </a>
           </Button>
         </motion.div>
-      </div>
+      </motion.div>
 
       {/* Sports ticker */}
       <div className="border-y border-border/60 bg-card/50 py-4" aria-hidden>

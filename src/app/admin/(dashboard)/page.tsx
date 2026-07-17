@@ -1,5 +1,13 @@
 import Link from "next/link";
-import { ArrowRight, CalendarDays, ClipboardList, Hourglass, Users } from "lucide-react";
+import {
+  ArrowRight,
+  CalendarDays,
+  ClipboardList,
+  FileText,
+  Hourglass,
+  UserPlus,
+  Users,
+} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { supabaseServer } from "@/lib/supabase/server";
@@ -51,6 +59,50 @@ export default async function AdminOverviewPage() {
             <p className="mt-3 text-3xl font-bold">{stat.value}</p>
             <p className="text-sm text-muted-foreground">{stat.label}</p>
           </div>
+        ))}
+      </div>
+
+      <h2 className="mt-10 font-display text-2xl font-bold uppercase tracking-wide">Manage</h2>
+      <div className="mt-4 grid gap-4 sm:grid-cols-3">
+        {(
+          [
+            {
+              href: "/admin/events",
+              icon: CalendarDays,
+              title: "Event details",
+              body: "Create sessions, set intensity, distance, gear list, photos and registration questions.",
+            },
+            {
+              href: "/admin/crew",
+              icon: UserPlus,
+              title: "Add crew",
+              body: "Add crew members with photos, roles, bios and Instagram links.",
+            },
+            {
+              href: "/admin/settings",
+              icon: FileText,
+              title: "Terms & conditions",
+              body: "Edit the terms shown to every participant, plus contact and community links.",
+            },
+          ] as const
+        ).map((action) => (
+          <Link
+            key={action.href}
+            href={action.href}
+            className="group rounded-xl border border-border bg-card p-5 transition-colors hover:border-primary/40 hover:bg-accent focus-visible:outline-2 focus-visible:outline-offset-2"
+          >
+            <span className="flex size-10 items-center justify-center rounded-lg bg-primary/15 text-primary">
+              <action.icon className="size-5" aria-hidden />
+            </span>
+            <p className="mt-3 flex items-center gap-2 font-display text-xl font-bold uppercase tracking-wide">
+              {action.title}
+              <ArrowRight
+                className="size-4 text-muted-foreground transition-transform group-hover:translate-x-1"
+                aria-hidden
+              />
+            </p>
+            <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{action.body}</p>
+          </Link>
         ))}
       </div>
 

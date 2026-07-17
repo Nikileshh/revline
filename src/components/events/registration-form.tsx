@@ -18,7 +18,12 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { registerForEvent } from "@/server/actions/register";
-import type { CommunityEvent, RegistrationStatus } from "@/types";
+import {
+  BLOOD_GROUPS,
+  GENDER_OPTIONS,
+  type CommunityEvent,
+  type RegistrationStatus,
+} from "@/types";
 
 interface RegistrationFormProps {
   event: CommunityEvent;
@@ -30,6 +35,9 @@ interface FormState {
   age: string;
   phone: string;
   email: string;
+  gender: string;
+  emergencyContact: string;
+  bloodGroup: string;
   answers: Record<string, string>;
 }
 
@@ -45,6 +53,9 @@ export function RegistrationForm({ event, isFull }: RegistrationFormProps) {
     age: "",
     phone: "",
     email: "",
+    gender: "",
+    emergencyContact: "",
+    bloodGroup: "",
     answers: {},
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -88,6 +99,9 @@ export function RegistrationForm({ event, isFull }: RegistrationFormProps) {
       next.phone = "Please enter a valid phone number";
     if (form.email && !/^\S+@\S+\.\S+$/.test(form.email.trim()))
       next.email = "Please enter a valid email";
+    if (!form.gender) next.gender = "Please select your gender";
+    if (!/^[+]?[0-9][0-9\s-]{8,14}$/.test(form.emergencyContact.trim()))
+      next.emergencyContact = "Please enter a valid emergency contact number";
     setErrors(next);
     return Object.keys(next).length === 0;
   }
@@ -111,6 +125,9 @@ export function RegistrationForm({ event, isFull }: RegistrationFormProps) {
         age: form.age,
         phone: form.phone,
         email: form.email,
+        gender: form.gender,
+        emergency_contact: form.emergencyContact,
+        blood_group: form.bloodGroup,
         answers: form.answers,
       });
       if (res.ok && res.data) {
@@ -119,7 +136,15 @@ export function RegistrationForm({ event, isFull }: RegistrationFormProps) {
       } else {
         if (res.fieldErrors) {
           setErrors(res.fieldErrors);
-          const detailFields = ["name", "age", "phone", "email"];
+          const detailFields = [
+            "name",
+            "age",
+            "phone",
+            "email",
+            "gender",
+            "emergency_contact",
+            "blood_group",
+          ];
           if (Object.keys(res.fieldErrors).some((k) => detailFields.includes(k))) {
             setStep("details");
           }
@@ -283,6 +308,69 @@ export function RegistrationForm({ event, isFull }: RegistrationFormProps) {
               />
               {errors.email && (
                 <p id="reg-email-error" className="text-sm text-destructive">{errors.email}</p>
+              )}
+            </div>
+
+            <div className="grid gap-5 sm:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="reg-gender">Gender *</Label>
+                <Select
+                  value={form.gender}
+                  onValueChange={(v) => setField("gender", v ?? "")}
+                >
+                  <SelectTrigger id="reg-gender" aria-invalid={!!errors.gender} className="w-full">
+                    <SelectValue placeholder="Select" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {GENDER_OPTIONS.map((g) => (
+                      <SelectItem key={g} value={g}>
+                        {g}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {errors.gender && (
+                  <p className="text-sm text-destructive">{errors.gender}</p>
+                )}
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="reg-blood">Blood group (optional)</Label>
+                <Select
+                  value={form.bloodGroup}
+                  onValueChange={(v) => setField("bloodGroup", v ?? "")}
+                >
+                  <SelectTrigger id="reg-blood" className="w-full">
+                    <SelectValue placeholder="Select" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {BLOOD_GROUPS.map((b) => (
+                      <SelectItem key={b} value={b}>
+                        {b}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="reg-emergency">Emergency contact number *</Label>
+              <Input
+                id="reg-emergency"
+                type="tel"
+                value={form.emergencyContact}
+                onChange={(e) => setField("emergencyContact", e.target.value)}
+                aria-invalid={!!errors.emergencyContact}
+                aria-describedby={errors.emergencyContact ? "reg-emergency-error" : undefined}
+                placeholder="+91 98765 43210"
+              />
+              <p className="text-xs text-muted-foreground">
+                Someone we can reach if there&apos;s an emergency during the session.
+              </p>
+              {errors.emergencyContact && (
+                <p id="reg-emergency-error" className="text-sm text-destructive">
+                  {errors.emergencyContact}
+                </p>
               )}
             </div>
           </motion.fieldset>
