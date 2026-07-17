@@ -88,6 +88,18 @@ export async function getConfirmedCount(eventId: string): Promise<number> {
   }
 }
 
+export async function getTotalConfirmedCount(): Promise<number> {
+  try {
+    const { count } = await supabaseAdmin()
+      .from("registrations")
+      .select("id", { count: "exact", head: true })
+      .eq("status", "confirmed");
+    return count ?? 0;
+  } catch {
+    return 0;
+  }
+}
+
 export async function getCrew(): Promise<CrewMember[]> {
   try {
     const { data } = await supabaseAnon()
