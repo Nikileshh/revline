@@ -5,7 +5,7 @@ import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "mo
 import { RunnerFigure } from "@/components/shared/runner-figure";
 
 /**
- * Sports scroll effect: a maroon track fills across the top of the page as
+ * Sports scroll effect: an orange track fills across the top of the page as
  * you scroll, with a sprinter running at its leading edge — the end of the
  * page is his finish line.
  */

@@ -4,7 +4,7 @@ export const alt = "RevLine — A Hybrid Training Club";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-const MAROON = "#B34753";
+const ORANGE = "#D9752F";
 const SPORTS = "RUNNING · FOOTBALL · TURF · TREKKING · SWIMMING · WORKOUTS";
 
 export default function OpenGraphImage() {
@@ -18,9 +18,9 @@ export default function OpenGraphImage() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: "#120d0e",
+          backgroundColor: "#191006",
           backgroundImage:
-            "radial-gradient(ellipse 65% 60% at 50% -12%, rgba(179,71,83,0.5), rgba(18,13,14,0))",
+            "radial-gradient(ellipse 65% 60% at 50% -12%, rgba(217,117,47,0.45), rgba(18,13,14,0))",
         }}
       >
         <div
@@ -28,8 +28,8 @@ export default function OpenGraphImage() {
             display: "flex",
             padding: "10px 28px",
             borderRadius: 999,
-            border: `2px solid ${MAROON}`,
-            color: "#E7A9B1",
+            border: `2px solid ${ORANGE}`,
+            color: "#F5CFA6",
             fontSize: 24,
             fontWeight: 600,
             letterSpacing: 8,
@@ -51,7 +51,7 @@ export default function OpenGraphImage() {
           }}
         >
           REV
-          <span style={{ color: MAROON }}>LINE</span>
+          <span style={{ color: ORANGE }}>LINE</span>
         </div>
 
         <div
@@ -59,7 +59,7 @@ export default function OpenGraphImage() {
             display: "flex",
             marginTop: 30,
             fontSize: 36,
-            color: "rgba(255,255,255,0.82)",
+            color: "rgba(255,244,224,0.85)",
             textAlign: "center",
           }}
         >
@@ -72,7 +72,7 @@ export default function OpenGraphImage() {
             marginTop: 44,
             fontSize: 22,
             letterSpacing: 4,
-            color: "rgba(255,255,255,0.45)",
+            color: "rgba(255,244,224,0.5)",
           }}
         >
           {SPORTS}
@@ -86,7 +86,7 @@ export default function OpenGraphImage() {
             width: "100%",
             height: 16,
             display: "flex",
-            backgroundImage: `linear-gradient(90deg, transparent, ${MAROON}, transparent)`,
+            backgroundImage: `linear-gradient(90deg, transparent, ${ORANGE}, transparent)`,
           }}
         />
       </div>

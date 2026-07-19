@@ -28,7 +28,7 @@ export function SportsHero({ instagramUrl, memberCount }: SportsHeroProps) {
 
   return (
     <section className="relative overflow-hidden">
-      {/* One confident maroon glow, nothing else fighting the type */}
+      {/* One confident orange glow, nothing else fighting the type */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 h-[560px] bg-[radial-gradient(ellipse_55%_50%_at_50%_-12%,color-mix(in_oklab,var(--primary)_32%,transparent),transparent)]"

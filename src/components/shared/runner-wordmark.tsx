@@ -9,7 +9,7 @@ const RUN_DURATION = 2.4;
 
 /**
  * Login hero: a sprinter crosses the strip corner to corner, drawing the
- * maroon "rev line" and revealing the REVLINE letters as it passes each one.
+ * orange "rev line" and revealing the REVLINE letters as it passes each one.
  */
 export function RunnerWordmark() {
   const reduce = useReducedMotion();
