@@ -4,7 +4,7 @@ export const alt = "RevLine — A Hybrid Training Club";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-const ORANGE = "#D9752F";
+const ORANGE = "#C25E1E";
 const SPORTS = "RUNNING · FOOTBALL · TURF · TREKKING · SWIMMING · WORKOUTS";
 
 export default function OpenGraphImage() {
@@ -29,7 +29,7 @@ export default function OpenGraphImage() {
             padding: "10px 28px",
             borderRadius: 999,
             border: `2px solid ${ORANGE}`,
-            color: "#8A5A2E",
+            color: "#A34A12",
             fontSize: 24,
             fontWeight: 600,
             letterSpacing: 8,
@@ -46,7 +46,7 @@ export default function OpenGraphImage() {
             fontWeight: 800,
             fontStyle: "italic",
             letterSpacing: -6,
-            color: "#3E2A16",
+            color: "#8F3E0F",
             lineHeight: 1,
           }}
         >
@@ -59,7 +59,7 @@ export default function OpenGraphImage() {
             display: "flex",
             marginTop: 30,
             fontSize: 36,
-            color: "rgba(62,42,22,0.85)",
+            color: "rgba(143,62,15,0.85)",
             textAlign: "center",
           }}
         >
@@ -72,7 +72,7 @@ export default function OpenGraphImage() {
             marginTop: 44,
             fontSize: 22,
             letterSpacing: 4,
-            color: "rgba(62,42,22,0.5)",
+            color: "rgba(143,62,15,0.55)",
           }}
         >
           {SPORTS}
