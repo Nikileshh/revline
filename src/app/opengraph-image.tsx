@@ -18,9 +18,9 @@ export default function OpenGraphImage() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: "#191006",
+          backgroundColor: "#F8EFDC",
           backgroundImage:
-            "radial-gradient(ellipse 65% 60% at 50% -12%, rgba(217,117,47,0.45), rgba(18,13,14,0))",
+            "radial-gradient(ellipse 65% 60% at 50% -12%, rgba(217,117,47,0.35), rgba(248,239,220,0))",
         }}
       >
         <div
@@ -29,7 +29,7 @@ export default function OpenGraphImage() {
             padding: "10px 28px",
             borderRadius: 999,
             border: `2px solid ${ORANGE}`,
-            color: "#F5CFA6",
+            color: "#8A5A2E",
             fontSize: 24,
             fontWeight: 600,
             letterSpacing: 8,
@@ -46,7 +46,7 @@ export default function OpenGraphImage() {
             fontWeight: 800,
             fontStyle: "italic",
             letterSpacing: -6,
-            color: "#ffffff",
+            color: "#3E2A16",
             lineHeight: 1,
           }}
         >
@@ -59,7 +59,7 @@ export default function OpenGraphImage() {
             display: "flex",
             marginTop: 30,
             fontSize: 36,
-            color: "rgba(255,244,224,0.85)",
+            color: "rgba(62,42,22,0.85)",
             textAlign: "center",
           }}
         >
@@ -72,7 +72,7 @@ export default function OpenGraphImage() {
             marginTop: 44,
             fontSize: 22,
             letterSpacing: 4,
-            color: "rgba(255,244,224,0.5)",
+            color: "rgba(62,42,22,0.5)",
           }}
         >
           {SPORTS}

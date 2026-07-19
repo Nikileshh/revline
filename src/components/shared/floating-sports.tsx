@@ -78,7 +78,7 @@ function TravellingGear({ lane, offset }: { lane: (typeof LANES)[number]; offset
               : { duration: lane.duration / 6, repeat: Infinity, ease: "easeInOut" }
           }
         >
-          <Gear className="h-auto w-full drop-shadow-[0_12px_18px_rgba(0,0,0,0.5)]" />
+          <Gear className="h-auto w-full drop-shadow-[0_10px_16px_rgba(90,60,30,0.3)]" />
         </motion.div>
       </motion.div>
     </motion.div>

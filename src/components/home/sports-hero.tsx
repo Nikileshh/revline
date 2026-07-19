@@ -48,7 +48,7 @@ export function SportsHero({ instagramUrl, memberCount }: SportsHeroProps) {
 
         <motion.h1
           {...anim(0.1)}
-          className="mt-8 max-w-4xl text-balance font-display text-6xl font-bold uppercase italic leading-[0.95] tracking-tight text-white sm:text-7xl lg:text-8xl"
+          className="mt-8 max-w-4xl text-balance font-display text-6xl font-bold uppercase italic leading-[0.95] tracking-tight text-foreground sm:text-7xl lg:text-8xl"
         >
           Consistency builds power.
           <br />
@@ -57,7 +57,7 @@ export function SportsHero({ instagramUrl, memberCount }: SportsHeroProps) {
 
         <motion.p
           {...anim(0.2)}
-          className="mt-7 max-w-2xl text-balance text-base leading-relaxed text-white/65 sm:text-lg"
+          className="mt-7 max-w-2xl text-balance text-base leading-relaxed text-muted-foreground sm:text-lg"
         >
           Every weekend we move together — strength, cardio, mobility and endurance,
           blended into one hybrid training lifestyle. Beginner or beast, just show up.
@@ -75,7 +75,7 @@ export function SportsHero({ instagramUrl, memberCount }: SportsHeroProps) {
             asChild
             size="lg"
             variant="outline"
-            className="h-13 rounded-full border-white/20 bg-white/[0.04] px-8 text-base font-bold uppercase tracking-wide hover:border-white/40"
+            className="h-13 rounded-full border-border bg-card px-8 text-base font-bold uppercase tracking-wide hover:border-foreground/40"
           >
             <a href={instagramUrl} target="_blank" rel="noopener noreferrer">
               <InstagramIcon className="size-4" />
@@ -85,7 +85,7 @@ export function SportsHero({ instagramUrl, memberCount }: SportsHeroProps) {
         </motion.div>
 
         {memberCount > 0 && (
-          <motion.p {...anim(0.4)} className="mt-9 flex items-center gap-2.5 text-sm text-white/50">
+          <motion.p {...anim(0.4)} className="mt-9 flex items-center gap-2.5 text-sm text-muted-foreground">
             <span className="relative flex size-2">
               <span className="absolute inline-flex size-full animate-ping rounded-full bg-primary/60 motion-reduce:hidden" />
               <span className="relative inline-flex size-2 rounded-full bg-primary" />
@@ -105,7 +105,7 @@ export function SportsHero({ instagramUrl, memberCount }: SportsHeroProps) {
             animate={reduce ? undefined : { y: [0, 7, 0] }}
             transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
           >
-            <ChevronDown className="size-5 text-white/30" />
+            <ChevronDown className="size-5 text-foreground/30" />
           </motion.div>
         </motion.div>
       </div>

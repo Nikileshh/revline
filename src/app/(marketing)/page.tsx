@@ -62,12 +62,12 @@ export default async function HomePage() {
       <SportsHero instagramUrl={settings.instagram_url} memberCount={memberCount} />
 
       {/* Sports marquee — accelerates and flips with scroll */}
-      <div className="border-y border-white/10 bg-white/[0.03] py-4" aria-hidden>
+      <div className="border-y border-border bg-card/60 py-4" aria-hidden>
         <VelocityMarquee>
           {SPORTS.map((sport) => (
             <span
               key={sport}
-              className="flex items-center gap-10 font-display text-xl font-bold uppercase italic tracking-[0.15em] text-white/40"
+              className="flex items-center gap-10 font-display text-xl font-bold uppercase italic tracking-[0.15em] text-foreground/40"
             >
               {sport}
               <span className="size-2 rounded-full bg-primary/70" />
@@ -84,11 +84,11 @@ export default async function HomePage() {
               <p className="text-xs font-bold uppercase tracking-[0.25em] text-primary">
                 Why RevLine exists
               </p>
-              <h2 className="mt-3 text-balance font-display text-5xl font-bold uppercase leading-[1.02] tracking-wide text-white sm:text-6xl">
+              <h2 className="mt-3 text-balance font-display text-5xl font-bold uppercase leading-[1.02] tracking-wide text-foreground sm:text-6xl">
                 We were looking for more than solo workouts.
               </h2>
             </div>
-            <div className="flex flex-col justify-center gap-4 text-base leading-relaxed text-white/70 sm:text-lg">
+            <div className="flex flex-col justify-center gap-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
               <p>
                 We wanted a space where people come together to train, grow, and support
                 each other — a community built on consistency, strength, and shared energy.
@@ -104,14 +104,14 @@ export default async function HomePage() {
         <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {PILLARS.map((pillar, i) => (
             <Reveal key={pillar.title} delay={i * 0.08}>
-              <div className="group h-full rounded-2xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur transition-all hover:-translate-y-1 hover:border-primary/50 hover:shadow-[0_10px_50px_color-mix(in_oklab,var(--primary)_25%,transparent)] motion-reduce:transition-none motion-reduce:hover:translate-y-0">
+              <div className="group h-full rounded-2xl border border-border bg-card/70 p-6 backdrop-blur transition-all hover:-translate-y-1 hover:border-primary/50 hover:shadow-[0_10px_50px_color-mix(in_oklab,var(--primary)_25%,transparent)] motion-reduce:transition-none motion-reduce:hover:translate-y-0">
                 <span className="flex size-12 items-center justify-center rounded-xl border border-primary/40 bg-primary/15 text-primary">
                   <pillar.icon className="size-5" aria-hidden />
                 </span>
-                <h3 className="mt-4 font-display text-2xl font-bold uppercase tracking-wide text-white">
+                <h3 className="mt-4 font-display text-2xl font-bold uppercase tracking-wide text-foreground">
                   {pillar.title}
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-white/65">
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                   {pillar.body}
                 </p>
               </div>
@@ -121,7 +121,7 @@ export default async function HomePage() {
       </section>
 
       {/* Upcoming events */}
-      <section className="border-y border-white/10 bg-white/[0.02]">
+      <section className="border-y border-border bg-card/40">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-24">
           <Reveal>
             <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
@@ -129,13 +129,13 @@ export default async function HomePage() {
                 <p className="text-xs font-bold uppercase tracking-[0.25em] text-primary">
                   This weekend &amp; beyond
                 </p>
-                <h2 className="mt-3 font-display text-5xl font-bold uppercase tracking-wide text-white sm:text-6xl">
+                <h2 className="mt-3 font-display text-5xl font-bold uppercase tracking-wide text-foreground sm:text-6xl">
                   Upcoming sessions
                 </h2>
               </div>
               <Link
                 href="/events"
-                className="group flex w-fit items-center gap-2 rounded-full border border-white/20 bg-white/[0.05] px-6 py-2.5 text-sm font-bold uppercase tracking-wide text-white transition-colors hover:border-primary hover:text-primary"
+                className="group flex w-fit items-center gap-2 rounded-full border border-border bg-card px-6 py-2.5 text-sm font-bold uppercase tracking-wide text-foreground transition-colors hover:border-primary hover:text-primary"
               >
                 All events
                 <ArrowRight
@@ -156,12 +156,12 @@ export default async function HomePage() {
             </div>
           ) : (
             <Reveal>
-              <div className="mt-10 rounded-2xl border border-dashed border-white/15 p-12 text-center">
+              <div className="mt-10 rounded-2xl border border-dashed border-border p-12 text-center">
                 <Sparkles className="mx-auto size-8 text-primary" aria-hidden />
-                <p className="mt-4 font-display text-xl font-bold uppercase tracking-wide text-white">
+                <p className="mt-4 font-display text-xl font-bold uppercase tracking-wide text-foreground">
                   Next session dropping soon
                 </p>
-                <p className="mt-1 text-sm text-white/60">
+                <p className="mt-1 text-sm text-muted-foreground">
                   Follow us on Instagram or join the WhatsApp community to hear first.
                 </p>
               </div>
@@ -177,21 +177,21 @@ export default async function HomePage() {
             <p className="text-xs font-bold uppercase tracking-[0.25em] text-primary">
               From the crew
             </p>
-            <h2 className="mt-3 font-display text-5xl font-bold uppercase tracking-wide text-white sm:text-6xl">
+            <h2 className="mt-3 font-display text-5xl font-bold uppercase tracking-wide text-foreground sm:text-6xl">
               What members say
             </h2>
           </Reveal>
           <div className="mt-10 grid gap-5 md:grid-cols-3">
             {testimonials.slice(0, 3).map((t, i) => (
               <Reveal key={t.id} delay={i * 0.08}>
-                <figure className="flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur transition-colors hover:border-primary/40">
+                <figure className="flex h-full flex-col rounded-2xl border border-border bg-card/70 p-6 backdrop-blur transition-colors hover:border-primary/40">
                   <Quote className="size-5 text-primary" aria-hidden />
-                  <blockquote className="mt-4 flex-1 text-sm leading-relaxed text-white/80">
+                  <blockquote className="mt-4 flex-1 text-sm leading-relaxed text-foreground/80">
                     &ldquo;{t.quote}&rdquo;
                   </blockquote>
                   <figcaption className="mt-5 text-sm">
-                    <span className="font-semibold text-white">{t.name}</span>
-                    {t.label && <span className="text-white/55"> · {t.label}</span>}
+                    <span className="font-semibold text-foreground">{t.name}</span>
+                    {t.label && <span className="text-muted-foreground"> · {t.label}</span>}
                   </figcaption>
                 </figure>
               </Reveal>
@@ -206,17 +206,17 @@ export default async function HomePage() {
           <div className="relative overflow-hidden rounded-[2rem] border border-primary/40 bg-gradient-to-br from-primary/30 via-card to-background p-10 text-center sm:p-16">
             <div className="pointer-events-none absolute -right-24 -top-24 size-80 rounded-full bg-primary/25 blur-3xl" />
             <div className="pointer-events-none absolute -bottom-28 -left-20 size-80 rounded-full bg-primary/20 blur-3xl" />
-            <h2 className="relative text-balance font-display text-5xl font-bold uppercase italic tracking-wide text-white sm:text-6xl">
+            <h2 className="relative text-balance font-display text-5xl font-bold uppercase italic tracking-wide text-foreground sm:text-6xl">
               Ready to join the movement?
             </h2>
-            <p className="relative mx-auto mt-4 max-w-xl text-balance text-white/75">
+            <p className="relative mx-auto mt-4 max-w-xl text-balance text-foreground/75">
               If you&apos;re ready to move, grow, and commit — register for a session or
               jump straight into the community chat.
             </p>
             <div className="relative mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Link
                 href="/events"
-                className="flex h-12 items-center gap-3 rounded-full bg-primary pl-2 pr-7 text-white shadow-[0_0_45px_color-mix(in_oklab,var(--primary)_50%,transparent)] transition-colors hover:bg-[color-mix(in_oklab,var(--primary)_85%,white)]"
+                className="flex h-12 items-center gap-3 rounded-full bg-primary pl-2 pr-7 text-primary-foreground shadow-[0_0_45px_color-mix(in_oklab,var(--primary)_50%,transparent)] transition-colors hover:bg-[color-mix(in_oklab,var(--primary)_85%,white)]"
               >
                 <span className="flex items-center justify-center rounded-full bg-white/20 p-1.5">
                   <ArrowUpRight className="size-5" aria-hidden />
@@ -230,7 +230,7 @@ export default async function HomePage() {
                   href={settings.whatsapp_community_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex h-12 items-center gap-2 rounded-full border border-white/25 bg-white/[0.07] px-7 text-sm font-bold uppercase tracking-wide text-white backdrop-blur transition-colors hover:border-white/50 hover:bg-white/15"
+                  className="flex h-12 items-center gap-2 rounded-full border border-border bg-card px-7 text-sm font-bold uppercase tracking-wide text-foreground backdrop-blur transition-colors hover:border-foreground/40 hover:bg-accent"
                 >
                   <MessageCircle className="size-4" aria-hidden />
                   Join the WhatsApp community
