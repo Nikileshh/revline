@@ -7,6 +7,7 @@ import { Loader2, Trash2, Upload } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
+import { compressImage } from "@/lib/image";
 import { supabaseBrowser } from "@/lib/supabase/client";
 import type { EventPhoto } from "@/types";
 
@@ -25,13 +26,13 @@ export function PhotoManager({ eventId, photos }: PhotoManagerProps) {
     const supabase = supabaseBrowser();
     let uploaded = 0;
 
-    for (const file of Array.from(files)) {
+    for (const original of Array.from(files)) {
       try {
-        const ext = file.name.split(".").pop() ?? "jpg";
-        const path = `events/${eventId}/${Date.now()}-${uploaded}.${ext}`;
+        const file = await compressImage(original);
+        const path = `events/${eventId}/${Date.now()}-${uploaded}.webp`;
         const { error: storageError } = await supabase.storage
           .from("media")
-          .upload(path, file, { cacheControl: "31536000" });
+          .upload(path, file, { cacheControl: "31536000", contentType: "image/webp" });
         if (storageError) throw storageError;
 
         const { data } = supabase.storage.from("media").getPublicUrl(path);
@@ -43,7 +44,7 @@ export function PhotoManager({ eventId, photos }: PhotoManagerProps) {
         if (dbError) throw dbError;
         uploaded++;
       } catch (err) {
-        toast.error(err instanceof Error ? err.message : `Failed to upload ${file.name}`);
+        toast.error(err instanceof Error ? err.message : `Failed to upload ${original.name}`);
       }
     }
 

@@ -82,6 +82,27 @@ create table if not exists public.event_photos (
 
 create index if not exists event_photos_event_idx on public.event_photos(event_id);
 
+-- GALLERY PHOTOS ----------------------------------------------
+-- Curated wall of photos shown on /gallery. Independent of event_photos so
+-- admins can hand-pick the site's "best-of" without touching per-event albums.
+-- `size` controls the tile footprint in the bento grid (see gallery-grid.tsx).
+-- `event_id` is optional; if set and the event is deleted, the link is cleared
+-- but the gallery entry stays.
+create table if not exists public.gallery_photos (
+  id         uuid primary key default gen_random_uuid(),
+  url        text not null,
+  alt        text,
+  caption    text,
+  size       text not null default 'sm'
+             check (size in ('sm','wide','tall','xl')),
+  event_id   uuid references public.events(id) on delete set null,
+  sort_order integer not null default 0,
+  published  boolean not null default true,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists gallery_photos_sort_idx on public.gallery_photos(sort_order);
+
 -- SITE SETTINGS (single row) ---------------------------------
 create table if not exists public.site_settings (
   id                     boolean primary key default true check (id), -- enforces one row
@@ -103,6 +124,7 @@ alter table public.registrations enable row level security;
 alter table public.crew_members  enable row level security;
 alter table public.testimonials  enable row level security;
 alter table public.event_photos  enable row level security;
+alter table public.gallery_photos enable row level security;
 alter table public.site_settings enable row level security;
 
 -- Public read access to site content
@@ -110,6 +132,7 @@ create policy "public read events"        on public.events        for select usi
 create policy "public read crew"          on public.crew_members  for select using (true);
 create policy "public read testimonials"  on public.testimonials  for select using (published);
 create policy "public read event photos"  on public.event_photos  for select using (true);
+create policy "public read gallery"        on public.gallery_photos for select using (published);
 create policy "public read settings"      on public.site_settings for select using (true);
 
 -- Admin (any authenticated user — keep Supabase signups disabled!)
@@ -118,6 +141,7 @@ create policy "admin all registrations" on public.registrations for all to authe
 create policy "admin all crew"          on public.crew_members  for all to authenticated using (true) with check (true);
 create policy "admin all testimonials"  on public.testimonials  for all to authenticated using (true) with check (true);
 create policy "admin all photos"        on public.event_photos  for all to authenticated using (true) with check (true);
+create policy "admin all gallery"       on public.gallery_photos for all to authenticated using (true) with check (true);
 create policy "admin update settings"   on public.site_settings for update to authenticated using (true) with check (true);
 
 -- Registrations are inserted by the server with the service-role key,

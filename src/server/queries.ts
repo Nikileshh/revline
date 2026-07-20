@@ -5,6 +5,7 @@ import type {
   CommunityEvent,
   CrewMember,
   EventPhoto,
+  GalleryPhoto,
   SiteSettings,
   Testimonial,
 } from "@/types";
@@ -68,6 +69,20 @@ export async function getEventPhotos(eventId: string): Promise<EventPhoto[]> {
       .eq("event_id", eventId)
       .order("sort_order", { ascending: true });
     return (data as EventPhoto[]) ?? [];
+  } catch {
+    return [];
+  }
+}
+
+export async function getGalleryPhotos(): Promise<GalleryPhoto[]> {
+  try {
+    const { data } = await supabaseAnon()
+      .from("gallery_photos")
+      .select("*")
+      .eq("published", true)
+      .order("sort_order", { ascending: true })
+      .order("created_at", { ascending: false });
+    return (data as GalleryPhoto[]) ?? [];
   } catch {
     return [];
   }
