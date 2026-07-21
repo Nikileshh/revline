@@ -9,46 +9,6 @@ const IMPACT = 0.86; // seconds — the moment REV and LINE collide
 const WORD_DUR = 1.12;
 const TOTAL_MS = 3100;
 
-/** Soft billowing dust cloud behind the words (deterministic for SSR). */
-const CLOUD = [
-  { x: -320, y: -30, s: 300, dur: 1.7 },
-  { x: 300, y: -50, s: 320, dur: 1.8 },
-  { x: -110, y: -80, s: 270, dur: 1.6 },
-  { x: 160, y: -20, s: 290, dur: 1.7 },
-  { x: 20, y: 30, s: 340, dur: 1.85 },
-  { x: -210, y: 40, s: 260, dur: 1.65 },
-  { x: 220, y: 60, s: 270, dur: 1.7 },
-  { x: -30, y: -50, s: 320, dur: 1.75 },
-  { x: 110, y: 70, s: 250, dur: 1.6 },
-  { x: -160, y: -10, s: 280, dur: 1.7 },
-  { x: 260, y: 10, s: 260, dur: 1.65 },
-  { x: -260, y: 80, s: 240, dur: 1.6 },
-] as const;
-
-/** Sharper dust motes kicked out of the collision. */
-const MOTES = [
-  { a: 4, d: 360, s: 18, t: 1.2 },
-  { a: 20, d: 270, s: 12, t: 0.95 },
-  { a: 40, d: 320, s: 22, t: 1.3 },
-  { a: 58, d: 230, s: 10, t: 0.9 },
-  { a: 76, d: 300, s: 16, t: 1.1 },
-  { a: 96, d: 210, s: 11, t: 0.85 },
-  { a: 118, d: 280, s: 15, t: 1.05 },
-  { a: 138, d: 340, s: 24, t: 1.35 },
-  { a: 158, d: 240, s: 12, t: 0.9 },
-  { a: 176, d: 310, s: 20, t: 1.2 },
-  { a: 196, d: 250, s: 13, t: 0.95 },
-  { a: 214, d: 330, s: 22, t: 1.3 },
-  { a: 232, d: 220, s: 10, t: 0.85 },
-  { a: 252, d: 300, s: 17, t: 1.1 },
-  { a: 272, d: 260, s: 14, t: 1.0 },
-  { a: 294, d: 240, s: 12, t: 0.9 },
-  { a: 316, d: 340, s: 22, t: 1.3 },
-  { a: 340, d: 280, s: 16, t: 1.1 },
-] as const;
-
-const rad = (deg: number) => (deg * Math.PI) / 180;
-
 type WKAudioContext = typeof AudioContext;
 
 /**
@@ -183,35 +143,27 @@ function playImpactSound(): () => void {
 
 /**
  * Cinematic opening: REV charges in from the left, LINE from the right; they
- * collide centre-screen with a camera shake and a cloud of flying dust
- * (with whoosh + boom), then the card lifts to reveal the page. Plays on
- * every load; click / Escape skips; reduced motion goes straight in.
+ * collide centre-screen with a warm bloom, camera shake and a whoosh + boom,
+ * then the card lifts to reveal the page. Plays on every load; click /
+ * Escape skips; reduced motion goes straight in.
  */
 export function CinematicIntro() {
   const reduce = useReducedMotion();
   const [show, setShow] = useState(true);
-  // Dust is heavy to composite; mount it only just before impact so the
-  // first paint on (re)load stays light and smooth.
-  const [burst, setBurst] = useState(false);
 
   useEffect(() => {
-    if (reduce) {
-      setShow(false);
-      return;
-    }
+    if (reduce) return;
     const stopSound = playImpactSound();
-    const burstTimer = setTimeout(() => setBurst(true), (IMPACT - 0.12) * 1000);
     const timer = setTimeout(() => setShow(false), TOTAL_MS);
     return () => {
       clearTimeout(timer);
-      clearTimeout(burstTimer);
       stopSound();
     };
   }, [reduce]);
 
   return (
     <AnimatePresence>
-      {show && (
+      {show && !reduce && (
         <motion.div
           key="intro"
           exit={{ opacity: 0, scale: 1.035 }}
@@ -227,29 +179,6 @@ export function CinematicIntro() {
         >
           {/* Static scene under the intro — the hero runs the animated one */}
           <StadiumScene animated={false} />
-
-          {/* Billowing dust cloud, behind the words */}
-          {burst && (
-          <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-            <div className="relative">
-              {CLOUD.map((p, i) => (
-                <motion.span
-                  key={i}
-                  initial={{ x: 0, y: 0, opacity: 0, scale: 0.2 }}
-                  animate={{
-                    x: p.x,
-                    y: p.y - 40,
-                    opacity: [0, 0.62, 0],
-                    scale: [0.2, 1.3],
-                  }}
-                  transition={{ delay: IMPACT, duration: p.dur, ease: [0.16, 0.7, 0.3, 1] }}
-                  className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#dcc199] blur-[24px]"
-                  style={{ width: p.s, height: p.s }}
-                />
-              ))}
-            </div>
-          </div>
-          )}
 
           <motion.div
             exit={{ y: -30, opacity: 0 }}
@@ -304,29 +233,6 @@ export function CinematicIntro() {
                 </motion.span>
               </h1>
             </motion.div>
-
-            {/* Sharper dust motes kicked outward, in front for depth */}
-            {burst && (
-            <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-              <div className="relative">
-                {MOTES.map((p, i) => (
-                  <motion.span
-                    key={i}
-                    initial={{ x: 0, y: 0, opacity: 0, scale: 0.3 }}
-                    animate={{
-                      x: Math.cos(rad(p.a)) * p.d,
-                      y: Math.sin(rad(p.a)) * p.d * 0.55 - 30,
-                      opacity: [0, 0.95, 0],
-                      scale: [0.3, 1.2],
-                    }}
-                    transition={{ delay: IMPACT + 0.02, duration: p.t, ease: [0.15, 0.7, 0.35, 1] }}
-                    className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#ecd6ad] blur-[2px]"
-                    style={{ width: p.s, height: p.s }}
-                  />
-                ))}
-              </div>
-            </div>
-            )}
 
             <motion.p
               initial={{ opacity: 0, y: 10 }}
