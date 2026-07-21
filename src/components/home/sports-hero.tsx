@@ -38,7 +38,22 @@ export function SportsHero({ instagramUrl, memberCount }: SportsHeroProps) {
         className="pointer-events-none absolute left-1/2 top-24 h-px w-[min(90%,64rem)] -translate-x-1/2 bg-gradient-to-r from-transparent via-primary/40 to-transparent"
       />
 
-      <div className="mx-auto flex min-h-[calc(100svh-4rem)] max-w-5xl flex-col items-center justify-center px-6 py-24 text-center">
+      {/* Ghost battle-cry behind the headline */}
+      <motion.div
+        aria-hidden
+        animate={reduce ? undefined : { scale: [1, 1.04, 1] }}
+        transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
+        className="pointer-events-none absolute inset-0 flex select-none items-center justify-center"
+      >
+        <span
+          className="whitespace-nowrap font-display text-[19vw] font-bold uppercase italic leading-none tracking-tight text-transparent"
+          style={{ WebkitTextStroke: "2px color-mix(in oklab, var(--primary) 22%, transparent)" }}
+        >
+          Show up.
+        </span>
+      </motion.div>
+
+      <div className="relative mx-auto flex min-h-[calc(100svh-4rem)] max-w-5xl flex-col items-center justify-center px-6 py-24 text-center">
         <motion.p
           {...anim(0)}
           className="rounded-full border border-primary/40 bg-primary/10 px-5 py-1.5 text-xs font-semibold uppercase tracking-[0.25em] text-primary"

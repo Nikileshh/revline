@@ -10,11 +10,14 @@ import {
   Sparkles,
 } from "lucide-react";
 
+import { Challenge } from "@/components/home/challenge";
 import { SportsHero } from "@/components/home/sports-hero";
+import { StatsStrip } from "@/components/home/stats-strip";
 import { VelocityMarquee } from "@/components/home/velocity-marquee";
 import { EventCard } from "@/components/events/event-card";
 import { Reveal } from "@/components/shared/reveal";
 import {
+  getCompletedEvents,
   getConfirmedCount,
   getSiteSettings,
   getTestimonials,
@@ -47,8 +50,9 @@ const PILLARS = [
 ] as const;
 
 export default async function HomePage() {
-  const [events, testimonials, settings, memberCount] = await Promise.all([
+  const [events, completedEvents, testimonials, settings, memberCount] = await Promise.all([
     getUpcomingEvents(),
+    getCompletedEvents(),
     getTestimonials(),
     getSiteSettings(),
     getTotalConfirmedCount(),
@@ -75,6 +79,13 @@ export default async function HomePage() {
           ))}
         </VelocityMarquee>
       </div>
+
+      {/* Proof in numbers */}
+      <StatsStrip
+        members={memberCount}
+        sessionsHosted={completedEvents.length}
+        sportsCount={SPORTS.length}
+      />
 
       {/* Story */}
       <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28">
@@ -119,6 +130,9 @@ export default async function HomePage() {
           ))}
         </div>
       </section>
+
+      {/* The challenge */}
+      <Challenge />
 
       {/* Upcoming events */}
       <section className="border-y border-border bg-card/40">
