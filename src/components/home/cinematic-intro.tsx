@@ -5,7 +5,6 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
 import { StadiumScene } from "@/components/home/stadium-scene";
 
-const SEEN_KEY = "revline-intro-seen";
 const IMPACT = 0.82; // seconds — the moment REV and LINE collide
 const TOTAL_MS = 3100;
 
@@ -39,19 +38,18 @@ const rad = (deg: number) => (deg * Math.PI) / 180;
 /**
  * Cinematic opening: REV charges in from the left, LINE from the right;
  * they collide centre-screen with a flash, shockwave, camera shake and a
- * burst of dust — then the card lifts to reveal the page. Once per
- * session; click / Escape skips; reduced motion goes straight in.
+ * burst of dust — then the card lifts to reveal the page. Plays on every
+ * load; click / Escape skips; reduced motion goes straight in.
  */
 export function CinematicIntro() {
   const reduce = useReducedMotion();
   const [show, setShow] = useState(true);
 
   useEffect(() => {
-    if (reduce || sessionStorage.getItem(SEEN_KEY)) {
+    if (reduce) {
       setShow(false);
       return;
     }
-    sessionStorage.setItem(SEEN_KEY, "1");
     const timer = setTimeout(() => setShow(false), TOTAL_MS);
     return () => clearTimeout(timer);
   }, [reduce]);
