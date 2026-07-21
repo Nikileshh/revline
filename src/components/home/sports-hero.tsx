@@ -30,20 +30,11 @@ export function SportsHero({ instagramUrl, memberCount }: SportsHeroProps) {
     <section className="relative overflow-hidden">
       <StadiumScene />
 
-      {/* Ghost battle-cry across the sky */}
-      <motion.div
+      {/* Scrim behind the headline so type holds against the bright sun */}
+      <div
         aria-hidden
-        animate={reduce ? undefined : { scale: [1, 1.04, 1] }}
-        transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
-        className="pointer-events-none absolute inset-0 flex select-none items-center justify-center"
-      >
-        <span
-          className="whitespace-nowrap font-display text-[19vw] font-bold uppercase italic leading-none tracking-tight text-transparent"
-          style={{ WebkitTextStroke: "1.5px rgba(253,244,223,0.14)" }}
-        >
-          Show up.
-        </span>
-      </motion.div>
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_62%_52%_at_50%_46%,rgba(10,5,14,0.58),transparent_72%)]"
+      />
 
       <div className="relative mx-auto flex min-h-[calc(100svh-4rem)] max-w-5xl flex-col items-center justify-center px-6 py-24 text-center">
         <motion.p
@@ -59,7 +50,7 @@ export function SportsHero({ instagramUrl, memberCount }: SportsHeroProps) {
         >
           Consistency builds power.
           <br />
-          <span className="text-[#ffa03c] [text-shadow:0_0_50px_rgba(255,150,40,0.5)]">
+          <span className="text-[#ffb454] [text-shadow:0_3px_10px_rgba(10,4,12,0.9),0_0_44px_rgba(10,4,12,0.65)]">
             Community builds purpose.
           </span>
         </motion.h1>
