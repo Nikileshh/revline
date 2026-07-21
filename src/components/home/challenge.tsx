@@ -59,7 +59,7 @@ export function Challenge() {
   return (
     <section
       ref={ref}
-      className="relative overflow-hidden bg-[oklch(0.26_0.06_46)] py-24 sm:py-32"
+      className="relative overflow-hidden bg-[oklch(0.13_0.05_330)] py-24 sm:py-32"
     >
       {/* Tunnel lighting */}
       <div

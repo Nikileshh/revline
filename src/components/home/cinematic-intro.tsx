@@ -34,8 +34,8 @@ export function CinematicIntro() {
       {show && (
         <motion.div
           key="intro"
-          exit={{ opacity: 0, scale: 1.06 }}
-          transition={{ duration: 0.8, ease: [0.65, 0, 0.35, 1] }}
+          exit={{ opacity: 0, scale: 1.045 }}
+          transition={{ duration: 1.15, ease: [0.83, 0, 0.17, 1] }}
           onClick={() => setShow(false)}
           role="button"
           aria-label="Skip intro"
@@ -47,7 +47,11 @@ export function CinematicIntro() {
         >
           <StadiumScene />
 
-          <div className="relative flex h-full flex-col items-center justify-center px-6">
+          <motion.div
+            exit={{ y: -36, opacity: 0 }}
+            transition={{ duration: 0.9, ease: [0.83, 0, 0.17, 1] }}
+            className="relative flex h-full flex-col items-center justify-center px-6"
+          >
             {/* The rev line draws across first */}
             <motion.div
               initial={{ scaleX: 0 }}
@@ -96,7 +100,7 @@ export function CinematicIntro() {
             >
               Click to enter
             </motion.p>
-          </div>
+          </motion.div>
         </motion.div>
       )}
     </AnimatePresence>
