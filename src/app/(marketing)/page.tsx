@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 
 import { Challenge } from "@/components/home/challenge";
+import { CinematicIntro } from "@/components/home/cinematic-intro";
 import { SportsHero } from "@/components/home/sports-hero";
 import { StatsStrip } from "@/components/home/stats-strip";
 import { VelocityMarquee } from "@/components/home/velocity-marquee";
@@ -63,6 +64,7 @@ export default async function HomePage() {
 
   return (
     <>
+      <CinematicIntro />
       <SportsHero instagramUrl={settings.instagram_url} memberCount={memberCount} />
 
       {/* Sports marquee — accelerates and flips with scroll */}
