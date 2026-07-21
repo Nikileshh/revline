@@ -46,7 +46,7 @@ export function SportsHero({ instagramUrl, memberCount }: SportsHeroProps) {
 
         <motion.h1
           {...anim(0.1)}
-          className="mt-8 max-w-4xl text-balance font-display text-6xl font-bold uppercase italic leading-[0.95] tracking-tight text-[#fdf4df] [text-shadow:0_4px_36px_rgba(10,4,12,0.55)] sm:text-7xl lg:text-8xl"
+          className="mt-8 max-w-4xl text-balance font-power text-6xl uppercase leading-[0.92] tracking-tight [transform:skewX(-6deg)] text-[#fdf4df] [text-shadow:0_4px_36px_rgba(10,4,12,0.55)] sm:text-7xl lg:text-8xl"
         >
           Consistency builds power.
           <br />

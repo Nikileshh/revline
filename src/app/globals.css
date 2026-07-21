@@ -104,6 +104,9 @@
   .font-display {
     font-family: var(--font-display);
   }
+  .font-power {
+    font-family: var(--font-power);
+  }
   .text-balance {
     text-wrap: balance;
   }
