@@ -159,7 +159,17 @@ function playImpactSound(): () => void {
     ns.start(t0);
     ns.stop(t0 + nd);
 
+    // If the browser blocked autoplay, unlock on the first interaction.
+    let unlockers: (() => void)[] = [];
+    if (ctx.state === "suspended") {
+      const unlock = () => void ctx.resume?.();
+      const events = ["pointerdown", "keydown", "touchstart"] as const;
+      events.forEach((ev) => window.addEventListener(ev, unlock, { once: true, passive: true }));
+      unlockers = events.map((ev) => () => window.removeEventListener(ev, unlock));
+    }
+
     return () => {
+      unlockers.forEach((off) => off());
       try {
         void ctx.close();
       } catch {
@@ -180,6 +190,9 @@ function playImpactSound(): () => void {
 export function CinematicIntro() {
   const reduce = useReducedMotion();
   const [show, setShow] = useState(true);
+  // Dust is heavy to composite; mount it only just before impact so the
+  // first paint on (re)load stays light and smooth.
+  const [burst, setBurst] = useState(false);
 
   useEffect(() => {
     if (reduce) {
@@ -187,9 +200,11 @@ export function CinematicIntro() {
       return;
     }
     const stopSound = playImpactSound();
+    const burstTimer = setTimeout(() => setBurst(true), (IMPACT - 0.12) * 1000);
     const timer = setTimeout(() => setShow(false), TOTAL_MS);
     return () => {
       clearTimeout(timer);
+      clearTimeout(burstTimer);
       stopSound();
     };
   }, [reduce]);
@@ -214,6 +229,7 @@ export function CinematicIntro() {
           <StadiumScene animated={false} />
 
           {/* Billowing dust cloud, behind the words */}
+          {burst && (
           <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
             <div className="relative">
               {CLOUD.map((p, i) => (
@@ -233,6 +249,7 @@ export function CinematicIntro() {
               ))}
             </div>
           </div>
+          )}
 
           <motion.div
             exit={{ y: -30, opacity: 0 }}
@@ -262,7 +279,7 @@ export function CinematicIntro() {
               }}
               className="relative"
             >
-              <h1 className="flex font-power text-[19vw] uppercase leading-[0.9] tracking-[-0.01em] [transform:skewX(-7deg)] sm:text-[15rem]">
+              <h1 className="flex font-power text-[13vw] uppercase leading-[0.9] tracking-[-0.01em] [transform:skewX(-7deg)] sm:text-[9rem]">
                 <motion.span
                   animate={{ x: ["-64vw", "0vw", "-1.4vw", "0vw"] }}
                   transition={{
@@ -289,6 +306,7 @@ export function CinematicIntro() {
             </motion.div>
 
             {/* Sharper dust motes kicked outward, in front for depth */}
+            {burst && (
             <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
               <div className="relative">
                 {MOTES.map((p, i) => (
@@ -308,6 +326,7 @@ export function CinematicIntro() {
                 ))}
               </div>
             </div>
+            )}
 
             <motion.p
               initial={{ opacity: 0, y: 10 }}

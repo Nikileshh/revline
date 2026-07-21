@@ -88,7 +88,9 @@ create table if not exists public.site_settings (
   instagram_url          text not null default 'https://www.instagram.com/revline.club',
   whatsapp_community_url text not null default '',
   contact_email          text not null default '',
-  terms_md               text not null default ''
+  terms_md               text not null default '',
+  stat_athletes          integer,  -- admin override for homepage stat; null = live count
+  stat_sessions          integer   -- admin override for homepage stat; null = live count
 );
 
 insert into public.site_settings (id) values (true) on conflict do nothing;

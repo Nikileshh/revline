@@ -9,6 +9,8 @@ const DEFAULTS: SiteSettings = {
   whatsapp_community_url: "",
   terms_md: "",
   contact_email: "",
+  stat_athletes: null,
+  stat_sessions: null,
 };
 
 export default async function AdminSettingsPage() {

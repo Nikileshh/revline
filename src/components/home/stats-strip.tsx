@@ -30,23 +30,23 @@ function CountUp({ to, suffix = "" }: { to: number; suffix?: string }) {
 interface StatsStripProps {
   members: number;
   sessionsHosted: number;
-  sportsCount: number;
 }
 
-/** Proof in numbers — counts up as it scrolls into view. */
-export function StatsStrip({ members, sessionsHosted, sportsCount }: StatsStripProps) {
+/** Two headline numbers — admin overrides win, else the live count. */
+export function StatsStrip({ members, sessionsHosted }: StatsStripProps) {
   const stats = [
-    members > 0 && { value: members, suffix: "+", label: "Athletes moving with us" },
-    sessionsHosted > 0 && { value: sessionsHosted, suffix: "", label: "Sessions hosted" },
-    { value: sportsCount, suffix: "", label: "Sports, one crew" },
-  ].filter(Boolean) as { value: number; suffix: string; label: string }[];
+    { value: members, suffix: "+", label: "Athletes joined us so far" },
+    { value: sessionsHosted, suffix: "+", label: "Sessions hosted" },
+  ].filter((s) => s.value > 0);
+
+  if (stats.length === 0) return null;
 
   return (
     <div className="border-b border-border bg-card/50">
-      <div className="mx-auto grid max-w-6xl grid-cols-2 gap-x-4 gap-y-8 px-4 py-10 sm:px-6 md:grid-cols-4">
+      <div className="mx-auto grid max-w-4xl grid-cols-1 gap-x-4 gap-y-8 px-4 py-10 sm:grid-cols-2 sm:px-6">
         {stats.map((stat) => (
           <div key={stat.label} className="flex flex-col items-center gap-1 text-center">
-            <span className="font-display text-5xl font-bold italic text-primary sm:text-6xl">
+            <span className="font-power text-6xl text-primary [transform:skewX(-6deg)] sm:text-7xl">
               <CountUp to={stat.value} suffix={stat.suffix} />
             </span>
             <span className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
@@ -54,14 +54,6 @@ export function StatsStrip({ members, sessionsHosted, sportsCount }: StatsStripP
             </span>
           </div>
         ))}
-        <div className="flex flex-col items-center gap-1 text-center">
-          <span className="font-display text-5xl font-bold italic text-primary sm:text-6xl">
-            Sun
-          </span>
-          <span className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-            Every single week
-          </span>
-        </div>
       </div>
     </div>
   );

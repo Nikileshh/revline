@@ -24,7 +24,10 @@ export function SettingsForm({ settings }: SettingsFormProps) {
   async function save(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
-    const { error } = await supabaseBrowser()
+    const supabase = supabaseBrowser();
+
+    // Core settings — always present.
+    const { error } = await supabase
       .from("site_settings")
       .update({
         instagram_url: draft.instagram_url.trim(),
@@ -33,14 +36,34 @@ export function SettingsForm({ settings }: SettingsFormProps) {
         terms_md: draft.terms_md,
       })
       .eq("id", true);
-    setSaving(false);
 
     if (error) {
+      setSaving(false);
       toast.error(error.message);
       return;
     }
-    toast.success("Settings saved");
+
+    // Stat overrides — may not exist yet if the columns haven't been added.
+    const { error: statError } = await supabase
+      .from("site_settings")
+      .update({ stat_athletes: draft.stat_athletes, stat_sessions: draft.stat_sessions })
+      .eq("id", true);
+
+    setSaving(false);
+
+    if (statError) {
+      toast.warning(
+        "Links & terms saved. The stat numbers need the one-time SQL migration first.",
+      );
+    } else {
+      toast.success("Settings saved");
+    }
     router.refresh();
+  }
+
+  function setStat(key: "stat_athletes" | "stat_sessions", value: string) {
+    const n = value.trim() === "" ? null : Math.max(0, Math.round(Number(value)));
+    setDraft((d) => ({ ...d, [key]: Number.isFinite(n as number) ? n : null }));
   }
 
   return (
@@ -76,6 +99,42 @@ export function SettingsForm({ settings }: SettingsFormProps) {
               value={draft.contact_email}
               onChange={(e) => setDraft((d) => ({ ...d, contact_email: e.target.value }))}
             />
+          </div>
+        </div>
+
+        <div className="rounded-xl border border-border bg-card p-5">
+          <h2 className="font-display text-xl font-bold uppercase tracking-wide">
+            Homepage stats
+          </h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            The two big numbers on the landing page. Leave blank to use the live
+            count from registrations and completed events.
+          </p>
+          <div className="mt-4 grid gap-5 sm:grid-cols-2">
+            <div className="space-y-2">
+              <Label htmlFor="set-athletes">Athletes joined so far</Label>
+              <Input
+                id="set-athletes"
+                type="number"
+                min={0}
+                inputMode="numeric"
+                value={draft.stat_athletes ?? ""}
+                onChange={(e) => setStat("stat_athletes", e.target.value)}
+                placeholder="Auto (live count)"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="set-sessions">Sessions hosted</Label>
+              <Input
+                id="set-sessions"
+                type="number"
+                min={0}
+                inputMode="numeric"
+                value={draft.stat_sessions ?? ""}
+                onChange={(e) => setStat("stat_sessions", e.target.value)}
+                placeholder="Auto (live count)"
+              />
+            </div>
           </div>
         </div>
 

@@ -84,9 +84,8 @@ export default async function HomePage() {
 
       {/* Proof in numbers */}
       <StatsStrip
-        members={memberCount}
-        sessionsHosted={completedEvents.length}
-        sportsCount={SPORTS.length}
+        members={settings.stat_athletes ?? memberCount}
+        sessionsHosted={settings.stat_sessions ?? completedEvents.length}
       />
 
       {/* Story */}

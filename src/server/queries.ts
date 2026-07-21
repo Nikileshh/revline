@@ -14,6 +14,8 @@ const DEFAULT_SETTINGS: SiteSettings = {
   whatsapp_community_url: "",
   terms_md: "",
   contact_email: "",
+  stat_athletes: null,
+  stat_sessions: null,
 };
 
 /**

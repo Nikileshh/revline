@@ -127,6 +127,9 @@ export interface SiteSettings {
   whatsapp_community_url: string;
   terms_md: string;
   contact_email: string;
+  /** Admin overrides for the homepage stats; null = use the live count. */
+  stat_athletes: number | null;
+  stat_sessions: number | null;
 }
 
 export const registrationSchema = z.object({
