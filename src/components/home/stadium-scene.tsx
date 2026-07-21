@@ -3,19 +3,26 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "motion/react";
 
+interface StadiumSceneProps {
+  /** Disable the push-in / pulse for cheap rendering (e.g. under the intro). */
+  animated?: boolean;
+}
+
 /**
  * The real stadium-at-sunset photograph with a cinematic grade: slow
  * push-in, warm horizon lift, edge vignette, darkened footing for type
  * legibility, and film grain.
  */
-export function StadiumScene() {
+export function StadiumScene({ animated = true }: StadiumSceneProps) {
   const reduce = useReducedMotion();
+  const anim = animated && !reduce;
 
   return (
     <div aria-hidden className="absolute inset-0 overflow-hidden bg-[#160b20]">
       <motion.div
         className="absolute inset-0"
-        animate={reduce ? undefined : { scale: [1.02, 1.08, 1.02] }}
+        animate={anim ? { scale: [1.02, 1.08, 1.02] } : undefined}
+        style={anim ? undefined : { scale: 1.02 }}
         transition={{ duration: 38, repeat: Infinity, ease: "easeInOut" }}
       >
         <Image
@@ -34,7 +41,7 @@ export function StadiumScene() {
       {/* Warm lift around the sun's horizon line */}
       <motion.div
         className="absolute inset-x-0 top-[40%] h-[30%] bg-[radial-gradient(ellipse_50%_100%_at_50%_50%,rgba(255,150,40,0.18),transparent_70%)]"
-        animate={reduce ? undefined : { opacity: [0.7, 1, 0.7] }}
+        animate={anim ? { opacity: [0.7, 1, 0.7] } : undefined}
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
       />
       {/* Ground the footing for buttons/scroll cue */}
