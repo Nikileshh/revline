@@ -19,6 +19,12 @@ interface GalleryContextType {
 
 const GalleryContext = React.createContext<GalleryContextType | null>(null);
 
+export function useGallery() {
+  const ctx = React.useContext(GalleryContext);
+  if (!ctx) throw new Error("useGallery must be used within a Gallery");
+  return ctx;
+}
+
 // Shared-element transition physics — tuned so the thumbnail-to-modal morph
 // feels crisp without overshoot on large images.
 const spring = {
