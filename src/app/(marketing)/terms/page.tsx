@@ -22,7 +22,7 @@ export default async function TermsPage() {
         Terms &amp; Conditions
       </h1>
 
-      <article className="prose prose-invert mt-10 max-w-none prose-headings:font-display prose-headings:uppercase prose-headings:tracking-wide prose-p:leading-relaxed prose-a:text-primary">
+      <article className="prose mt-10 max-w-none text-foreground prose-headings:font-display prose-headings:uppercase prose-headings:tracking-wide prose-headings:text-foreground prose-p:leading-relaxed prose-p:text-foreground/90 prose-strong:text-foreground prose-li:text-foreground/90 prose-a:text-primary hover:prose-a:text-primary/80 prose-blockquote:text-foreground/80 prose-blockquote:border-primary prose-code:text-foreground">
         {settings.terms_md ? (
           <ReactMarkdown>{settings.terms_md}</ReactMarkdown>
         ) : (

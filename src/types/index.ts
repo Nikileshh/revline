@@ -122,6 +122,34 @@ export interface EventPhoto {
   sort_order: number;
 }
 
+export type GallerySize = "sm" | "wide" | "tall" | "xl";
+
+export const GALLERY_SIZES: readonly GallerySize[] = [
+  "sm",
+  "wide",
+  "tall",
+  "xl",
+] as const;
+
+export const GALLERY_SIZE_LABELS: Record<GallerySize, string> = {
+  sm: "Small",
+  wide: "Wide",
+  tall: "Tall",
+  xl: "Feature",
+};
+
+export interface GalleryPhoto {
+  id: string;
+  url: string;
+  alt: string | null;
+  caption: string | null;
+  size: GallerySize;
+  event_id: string | null;
+  sort_order: number;
+  published: boolean;
+  created_at: string;
+}
+
 export interface SiteSettings {
   instagram_url: string;
   whatsapp_community_url: string;

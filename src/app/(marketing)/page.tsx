@@ -13,13 +13,16 @@ import {
 import { Challenge } from "@/components/home/challenge";
 import { CinematicIntro } from "@/components/home/cinematic-intro";
 import { SportsHero } from "@/components/home/sports-hero";
+import { MarqueeTile } from "@/components/home/marquee-tile";
 import { StatsStrip } from "@/components/home/stats-strip";
 import { VelocityMarquee } from "@/components/home/velocity-marquee";
 import { EventCard } from "@/components/events/event-card";
 import { Reveal } from "@/components/shared/reveal";
+import { Gallery } from "@/components/ui/shared-element-gallery";
 import {
   getCompletedEvents,
   getConfirmedCount,
+  getGalleryPhotos,
   getSiteSettings,
   getTestimonials,
   getTotalConfirmedCount,
@@ -29,8 +32,6 @@ import {
 // Cached and revalidated — instant navigation, refreshed every 60s and on
 // new registrations via revalidatePath.
 export const revalidate = 60;
-
-const SPORTS = ["Running", "Football", "Turf", "Trekking", "Swimming", "Workouts"];
 
 const PILLARS = [
   {
@@ -51,13 +52,15 @@ const PILLARS = [
 ] as const;
 
 export default async function HomePage() {
-  const [events, completedEvents, testimonials, settings, memberCount] = await Promise.all([
-    getUpcomingEvents(),
-    getCompletedEvents(),
-    getTestimonials(),
-    getSiteSettings(),
-    getTotalConfirmedCount(),
-  ]);
+  const [events, completedEvents, testimonials, settings, memberCount, photos] =
+    await Promise.all([
+      getUpcomingEvents(),
+      getCompletedEvents(),
+      getTestimonials(),
+      getSiteSettings(),
+      getTotalConfirmedCount(),
+      getGalleryPhotos(),
+    ]);
 
   const nextEvents = events.slice(0, 3);
   const counts = await Promise.all(nextEvents.map((e) => getConfirmedCount(e.id)));
@@ -67,20 +70,23 @@ export default async function HomePage() {
       <CinematicIntro />
       <SportsHero instagramUrl={settings.instagram_url} memberCount={memberCount} />
 
-      {/* Sports marquee — accelerates and flips with scroll */}
-      <div className="border-y border-border bg-card/60 py-4" aria-hidden>
-        <VelocityMarquee>
-          {SPORTS.map((sport) => (
-            <span
-              key={sport}
-              className="flex items-center gap-10 font-display text-xl font-bold uppercase italic tracking-[0.15em] text-foreground/40"
-            >
-              {sport}
-              <span className="size-2 rounded-full bg-primary/70" />
-            </span>
-          ))}
-        </VelocityMarquee>
-      </div>
+      {/* Gallery marquee — click any tile to view full size */}
+      {photos.length > 0 && (
+        <div className="border-y border-border bg-card/60 py-4">
+          <Gallery>
+            <VelocityMarquee baseVelocity={1}>
+              {photos.map((photo) => (
+                <MarqueeTile
+                  key={photo.id}
+                  id={photo.id}
+                  src={photo.url}
+                  alt={photo.alt ?? photo.caption ?? "RevLine session photo"}
+                />
+              ))}
+            </VelocityMarquee>
+          </Gallery>
+        </div>
+      )}
 
       {/* Proof in numbers */}
       <StatsStrip

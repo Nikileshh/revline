@@ -17,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { compressImage } from "@/lib/image";
 import { supabaseBrowser } from "@/lib/supabase/client";
 import type { CrewMember } from "@/types";
 
@@ -62,10 +63,12 @@ export function CrewManager({ crew }: CrewManagerProps) {
   async function uploadPhoto(file: File) {
     setUploading(true);
     try {
+      const compressed = await compressImage(file);
       const supabase = supabaseBrowser();
-      const ext = file.name.split(".").pop() ?? "jpg";
-      const path = `crew/${Date.now()}.${ext}`;
-      const { error } = await supabase.storage.from("media").upload(path, file);
+      const path = `crew/${Date.now()}.webp`;
+      const { error } = await supabase.storage
+        .from("media")
+        .upload(path, compressed, { contentType: "image/webp" });
       if (error) throw error;
       const { data } = supabase.storage.from("media").getPublicUrl(path);
       setDraft((d) => ({ ...d, photo_url: data.publicUrl }));

@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import {
   CalendarDays,
   ClipboardList,
+  ImageIcon,
   LayoutDashboard,
   LogOut,
   MessageSquareQuote,
@@ -21,6 +22,7 @@ const items = [
   { href: "/admin", label: "Overview", icon: LayoutDashboard },
   { href: "/admin/events", label: "Events", icon: CalendarDays },
   { href: "/admin/registrations", label: "Registrations", icon: ClipboardList },
+  { href: "/admin/gallery", label: "Gallery", icon: ImageIcon },
   { href: "/admin/crew", label: "Crew", icon: Users },
   { href: "/admin/testimonials", label: "Testimonials", icon: MessageSquareQuote },
   { href: "/admin/settings", label: "Settings", icon: Settings },
