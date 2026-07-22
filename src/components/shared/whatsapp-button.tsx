@@ -34,9 +34,9 @@ export function WhatsAppButton() {
       transition={{ delay: 1, duration: 0.4, ease: "easeOut" }}
       whileHover={reduce ? undefined : { scale: 1.08 }}
       whileTap={reduce ? undefined : { scale: 0.94 }}
-      className="fixed bottom-5 right-5 z-50 flex size-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_8px_30px_rgba(37,211,102,0.4)]"
+      className="fixed bottom-5 right-5 z-50 flex size-14 items-center justify-center rounded-full border border-primary/30 bg-primary text-primary-foreground shadow-[0_8px_30px_color-mix(in_oklab,var(--primary)_40%,transparent)] transition-colors hover:bg-[color-mix(in_oklab,var(--primary)_88%,black)]"
     >
-      <span className="absolute inline-flex size-full animate-ping rounded-full bg-[#25D366] opacity-30 motion-reduce:hidden" />
+      <span className="absolute inline-flex size-full animate-ping rounded-full bg-primary opacity-25 motion-reduce:hidden" />
       <WhatsAppIcon className="relative size-7" />
     </motion.a>
   );
