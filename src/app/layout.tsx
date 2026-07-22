@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Anton, Barlow_Condensed, Geist, Geist_Mono } from "next/font/google";
+import { Anton, Barlow_Condensed, Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 
 import { Toaster } from "@/components/ui/sonner";
@@ -8,6 +8,12 @@ const power = Anton({
   variable: "--font-power",
   subsets: ["latin"],
   weight: "400",
+});
+
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 const geistSans = Geist({
@@ -57,7 +63,8 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`dark ${geistSans.variable} ${geistMono.variable} ${display.variable} ${power.variable} h-full antialiased`}
+      className={`dark ${geistSans.variable} ${geistMono.variable} ${display.variable} ${power.variable} ${inter.variable} h-full antialiased`}
+      style={{ ["--font-podium" as string]: '"FSP DEMO - PODIUM Sharp 4.11", var(--font-power), sans-serif' }}
       suppressHydrationWarning
     >
       <body className="flex min-h-full flex-col">

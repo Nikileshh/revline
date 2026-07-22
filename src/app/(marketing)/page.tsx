@@ -14,7 +14,6 @@ import { Challenge } from "@/components/home/challenge";
 import { CinematicIntro } from "@/components/home/cinematic-intro";
 import { SportsHero } from "@/components/home/sports-hero";
 import { MarqueeTile } from "@/components/home/marquee-tile";
-import { StatsStrip } from "@/components/home/stats-strip";
 import { VelocityMarquee } from "@/components/home/velocity-marquee";
 import { EventCard } from "@/components/events/event-card";
 import { Reveal } from "@/components/shared/reveal";
@@ -68,7 +67,11 @@ export default async function HomePage() {
   return (
     <>
       <CinematicIntro />
-      <SportsHero instagramUrl={settings.instagram_url} memberCount={memberCount} />
+      <SportsHero
+        instagramUrl={settings.instagram_url}
+        memberCount={settings.stat_athletes ?? memberCount}
+        sessionsHosted={settings.stat_sessions ?? completedEvents.length}
+      />
 
       {/* Gallery marquee — click any tile to view full size */}
       {photos.length > 0 && (
@@ -87,12 +90,6 @@ export default async function HomePage() {
           </Gallery>
         </div>
       )}
-
-      {/* Proof in numbers */}
-      <StatsStrip
-        members={settings.stat_athletes ?? memberCount}
-        sessionsHosted={settings.stat_sessions ?? completedEvents.length}
-      />
 
       {/* Story */}
       <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28">
