@@ -193,6 +193,23 @@ export function CinematicIntro() {
     };
   }, []);
 
+  // The browser restores the previous scroll position on reload, which would
+  // drop the visitor at the bottom of the page the moment the intro lifts.
+  // Pin to the top and freeze scrolling while the card is up.
+  useEffect(() => {
+    if (reduce || !show) return;
+    const prevRestoration = history.scrollRestoration;
+    const prevOverflow = document.body.style.overflow;
+    history.scrollRestoration = "manual";
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      history.scrollRestoration = prevRestoration;
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    };
+  }, [reduce, show]);
+
   return (
     <AnimatePresence>
       {show && !reduce && (
