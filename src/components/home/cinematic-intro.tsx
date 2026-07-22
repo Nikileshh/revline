@@ -4,8 +4,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Volume2 } from "lucide-react";
 
-import { StadiumScene } from "@/components/home/stadium-scene";
-
 const IMPACT = 0.86; // seconds — the moment REV and LINE collide
 const WORD_DUR = 1.12;
 const TOTAL_MS = 3100;
@@ -209,10 +207,13 @@ export function CinematicIntro() {
           onKeyDown={(e) => {
             if (e.key === "Enter" || e.key === " " || e.key === "Escape") setShow(false);
           }}
-          className="fixed inset-0 z-[100] cursor-pointer overflow-hidden"
+          className="fixed inset-0 z-[100] cursor-pointer overflow-hidden bg-background"
         >
-          {/* Static scene under the intro — the hero runs the animated one */}
-          <StadiumScene animated={false} />
+          {/* Warm orange glow, matching the hero behind it */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_55%_at_50%_-10%,color-mix(in_oklab,var(--primary)_30%,transparent),transparent)]"
+          />
 
           {/* Light haze behind the words */}
           {burst && (
@@ -224,7 +225,7 @@ export function CinematicIntro() {
                     initial={{ x: 0, y: 0, opacity: 0, scale: 0.25 }}
                     animate={{ x: p.x, y: p.y - 30, opacity: [0, 0.26, 0], scale: [0.25, 1.2] }}
                     transition={{ delay: 0.12, duration: p.dur, ease: [0.16, 0.7, 0.3, 1] }}
-                    className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#dcc199] blur-[22px]"
+                    className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full bg-[color-mix(in_oklab,var(--primary)_45%,white)] blur-[22px]"
                     style={{ width: p.s, height: p.s }}
                   />
                 ))}
@@ -243,7 +244,7 @@ export function CinematicIntro() {
               initial={{ opacity: 0 }}
               animate={{ opacity: [0, 0.5, 0] }}
               transition={{ delay: IMPACT, duration: 0.5, times: [0, 0.16, 1], ease: "easeOut" }}
-              className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_45%_40%_at_50%_50%,rgba(255,224,176,0.6),transparent_70%)]"
+              className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_45%_40%_at_50%_50%,color-mix(in oklab,var(--primary) 35%,white),transparent_70%)]"
             />
 
             {/* Camera shake + squash on impact */}
@@ -269,7 +270,7 @@ export function CinematicIntro() {
                     times: [0, IMPACT / WORD_DUR, (IMPACT + 0.12) / WORD_DUR, 1],
                     ease: ["easeIn", "easeOut", "easeOut"],
                   }}
-                  className="text-[#fdf4df] [text-shadow:0_6px_50px_rgba(0,0,0,0.6)]"
+                  className="text-foreground [text-shadow:0_6px_44px_color-mix(in_oklab,var(--foreground)_22%,transparent)]"
                 >
                   REV
                 </motion.span>
@@ -280,7 +281,7 @@ export function CinematicIntro() {
                     times: [0, IMPACT / WORD_DUR, (IMPACT + 0.12) / WORD_DUR, 1],
                     ease: ["easeIn", "easeOut", "easeOut"],
                   }}
-                  className="text-[#ffa03c] [text-shadow:0_3px_12px_rgba(10,4,12,0.95),0_0_55px_rgba(255,150,40,0.55)]"
+                  className="text-primary [text-shadow:0_4px_40px_color-mix(in_oklab,var(--primary)_45%,transparent)]"
                 >
                   LINE
                 </motion.span>
@@ -302,7 +303,7 @@ export function CinematicIntro() {
                         scale: [0.3, 1.1],
                       }}
                       transition={{ delay: 0.14, duration: p.t, ease: [0.15, 0.7, 0.35, 1] }}
-                      className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#ecd6ad] blur-[2px]"
+                      className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full bg-[color-mix(in_oklab,var(--primary)_60%,white)] blur-[2px]"
                       style={{ width: p.s, height: p.s }}
                     />
                   ))}
@@ -314,7 +315,7 @@ export function CinematicIntro() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: IMPACT + 0.6, duration: 0.6, ease: "easeOut" }}
-              className="mt-5 text-xs font-semibold uppercase tracking-[0.4em] text-[#f3e6cc]/85 sm:text-sm"
+              className="mt-5 text-xs font-semibold uppercase tracking-[0.4em] text-muted-foreground sm:text-sm"
             >
               A Hybrid Training Club
             </motion.p>
@@ -334,7 +335,7 @@ export function CinematicIntro() {
                   e.stopPropagation();
                   setRunKey((k) => k + 1);
                 }}
-                className="flex items-center gap-2 rounded-full border border-[#ffa03c]/60 bg-black/40 px-5 py-2.5 text-[11px] font-bold uppercase tracking-[0.2em] text-[#ffd9a3] backdrop-blur-sm transition-colors hover:bg-black/60 focus-visible:outline-2 focus-visible:outline-offset-2"
+                className="flex items-center gap-2 rounded-full border border-primary/50 bg-card/80 px-5 py-2.5 text-[11px] font-bold uppercase tracking-[0.2em] text-primary backdrop-blur-sm transition-colors hover:bg-card focus-visible:outline-2 focus-visible:outline-offset-2"
               >
                 <Volume2 className="size-4" aria-hidden />
                 Enter with sound
@@ -344,7 +345,7 @@ export function CinematicIntro() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 2.1, duration: 0.7 }}
-                className="text-[11px] font-medium uppercase tracking-[0.2em] text-[#f3e6cc]/50"
+                className="text-[11px] font-medium uppercase tracking-[0.2em] text-muted-foreground/70"
               >
                 Click to enter
               </motion.p>

@@ -4,7 +4,7 @@ export const alt = "RevLine — A Hybrid Training Club";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-const ORANGE = "#ff8c1f";
+const ORANGE = "#C25E1E";
 const SPORTS = "RUNNING · FOOTBALL · TURF · TREKKING · SWIMMING · WORKOUTS";
 
 export default function OpenGraphImage() {
@@ -18,9 +18,9 @@ export default function OpenGraphImage() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: "#1d1026",
+          backgroundColor: "#F8EFDC",
           backgroundImage:
-            "radial-gradient(ellipse 65% 60% at 50% -12%, rgba(255,140,31,0.4), rgba(29,16,38,0))",
+            "radial-gradient(ellipse 65% 60% at 50% -12%, rgba(217,117,47,0.35), rgba(248,239,220,0))",
         }}
       >
         <div
@@ -29,7 +29,7 @@ export default function OpenGraphImage() {
             padding: "10px 28px",
             borderRadius: 999,
             border: `2px solid ${ORANGE}`,
-            color: "#ffd9a3",
+            color: "#A34A12",
             fontSize: 24,
             fontWeight: 600,
             letterSpacing: 8,
@@ -46,7 +46,7 @@ export default function OpenGraphImage() {
             fontWeight: 800,
             fontStyle: "italic",
             letterSpacing: -6,
-            color: "#fdf2dd",
+            color: "#8F3E0F",
             lineHeight: 1,
           }}
         >
@@ -59,7 +59,7 @@ export default function OpenGraphImage() {
             display: "flex",
             marginTop: 30,
             fontSize: 36,
-            color: "rgba(253,242,221,0.85)",
+            color: "rgba(143,62,15,0.85)",
             textAlign: "center",
           }}
         >
@@ -72,7 +72,7 @@ export default function OpenGraphImage() {
             marginTop: 44,
             fontSize: 22,
             letterSpacing: 4,
-            color: "rgba(253,242,221,0.5)",
+            color: "rgba(143,62,15,0.55)",
           }}
         >
           {SPORTS}
