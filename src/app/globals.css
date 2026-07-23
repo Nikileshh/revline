@@ -114,6 +114,33 @@
     font-family: var(--font-inter);
   }
 
+  /* Slow cinematic push-in on the hero still */
+  @keyframes ken-burns {
+    from {
+      transform: scale(1.02) translate3d(0, 0, 0);
+    }
+    to {
+      transform: scale(1.12) translate3d(-1.2%, -1%, 0);
+    }
+  }
+  .animate-ken-burns {
+    animation: ken-burns 32s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+
+  /* Faint anamorphic light sweep across the frame */
+  @keyframes light-sweep {
+    0% {
+      transform: translateX(-120%) rotate(12deg);
+    }
+    100% {
+      transform: translateX(320%) rotate(12deg);
+    }
+  }
+  .animate-light-sweep {
+    animation: light-sweep 14s ease-in-out 3s infinite;
+  }
+
   @keyframes fade-up {
     from {
       opacity: 0;
@@ -225,7 +252,9 @@
   .runner-frame-b {
     opacity: 0;
   }
-  .animate-marquee {
+  .animate-marquee,
+  .animate-ken-burns,
+  .animate-light-sweep {
     animation: none;
   }
 }
