@@ -31,24 +31,20 @@ export function SportsHero({ instagramUrl, memberCount, sessionsHosted }: Sports
           priority
           sizes="100vw"
           quality={88}
-          className="object-cover object-[72%_center] sm:object-[68%_center] lg:object-center"
+          className="object-cover object-center"
         />
       </div>
 
-      {/* Grade: deepen the left so the copy always reads */}
+      {/* Grade: a gentle left lift for the copy — light enough that all three
+          athletes still read, with text-shadow carrying legibility */}
       <div
         aria-hidden
-        className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/55 to-transparent"
+        className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/25 to-black/10"
       />
       {/* Seat the frame top and bottom */}
       <div
         aria-hidden
-        className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-black/45"
-      />
-      {/* Warm ember lift, matching the scene's red ambience */}
-      <div
-        aria-hidden
-        className="absolute inset-0 bg-[radial-gradient(ellipse_50%_45%_at_72%_45%,rgba(190,30,25,0.22),transparent_70%)]"
+        className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40"
       />
       {/* Vignette */}
       <div
