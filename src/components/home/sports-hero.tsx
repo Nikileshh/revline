@@ -20,41 +20,78 @@ export function SportsHero({ instagramUrl, memberCount, sessionsHosted }: Sports
     { value: "6", label: "Sports, one crew" },
   ].filter(Boolean) as { value: string; label: string }[];
 
+  // Deterministic embers (server-rendered — no client hooks needed)
+  const embers = [
+    { left: "10%", size: 5, dur: 7, delay: 0 },
+    { left: "22%", size: 3, dur: 9, delay: 1.5 },
+    { left: "34%", size: 4, dur: 8, delay: 3 },
+    { left: "46%", size: 6, dur: 10, delay: 0.8 },
+    { left: "58%", size: 3, dur: 7.5, delay: 2.2 },
+    { left: "67%", size: 5, dur: 9.5, delay: 4 },
+    { left: "76%", size: 4, dur: 8.5, delay: 1 },
+    { left: "85%", size: 3, dur: 7, delay: 3.5 },
+    { left: "92%", size: 5, dur: 10, delay: 2 },
+    { left: "16%", size: 3, dur: 11, delay: 5 },
+    { left: "51%", size: 4, dur: 8, delay: 6 },
+    { left: "71%", size: 3, dur: 9, delay: 5.5 },
+  ];
+
   return (
     <section className="relative -mt-20 flex min-h-screen w-full items-center overflow-hidden bg-black sm:-mt-24">
-      {/* The still, slowly pushing in */}
-      <div className="animate-ken-burns absolute inset-0">
-        <Image
-          src="/hero-athletes.jpg"
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          quality={88}
-          className="object-cover object-center"
-        />
+      {/* The still: racks into focus on load, then slowly pushes in.
+          Framed on the athletes' faces (upper band). */}
+      <div className="animate-focus-pull absolute inset-0">
+        <div className="animate-ken-burns absolute inset-0">
+          <Image
+            src="/hero-athletes.jpg"
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            quality={88}
+            className="object-cover object-[center_22%]"
+          />
+        </div>
       </div>
 
-      {/* Grade: a gentle left lift for the copy — light enough that all three
-          athletes still read, with text-shadow carrying legibility */}
+      {/* Grade: gentle left lift for the copy; the upper band stays clear so
+          faces read, text-shadow carries legibility */}
       <div
         aria-hidden
-        className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/25 to-black/10"
+        className="absolute inset-0 bg-gradient-to-r from-black/72 via-black/20 to-transparent"
       />
-      {/* Seat the frame top and bottom */}
+      {/* Keep faces bright up top, seat the copy at the bottom */}
       <div
         aria-hidden
-        className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40"
+        className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent"
       />
+      {/* Warm ember glow low in the frame, matching the scene */}
+      <div
+        aria-hidden
+        className="absolute inset-0 bg-[radial-gradient(ellipse_60%_45%_at_50%_100%,rgba(190,30,25,0.28),transparent_75%)]"
+      />
+      {/* Rising embers */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+        {embers.map((e, i) => (
+          <span
+            key={i}
+            className="animate-ember absolute bottom-[18%] rounded-full bg-[#ff7a3c]"
+            style={{
+              left: e.left,
+              width: e.size,
+              height: e.size,
+              animationDuration: `${e.dur}s`,
+              animationDelay: `${e.delay}s`,
+              boxShadow: "0 0 8px 1px rgba(255,120,50,0.7)",
+            }}
+          />
+        ))}
+      </div>
       {/* Vignette */}
       <div
         aria-hidden
-        className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_42%,rgba(0,0,0,0.72))]"
+        className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_46%,rgba(0,0,0,0.66))]"
       />
-      {/* Anamorphic light sweep */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="animate-light-sweep absolute inset-y-0 -left-1/3 w-1/4 bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
-      </div>
       {/* Film grain */}
       <div aria-hidden className="film-grain absolute inset-0 opacity-[0.07] mix-blend-overlay" />
 

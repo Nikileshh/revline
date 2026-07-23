@@ -128,17 +128,38 @@
     will-change: transform;
   }
 
-  /* Faint anamorphic light sweep across the frame */
-  @keyframes light-sweep {
-    0% {
-      transform: translateX(-120%) rotate(12deg);
+  /* Cinematic focus pull: the frame racks from soft to sharp on load */
+  @keyframes focus-pull {
+    from {
+      filter: blur(18px) saturate(1.3);
+      opacity: 0.35;
     }
-    100% {
-      transform: translateX(320%) rotate(12deg);
+    to {
+      filter: blur(0) saturate(1);
+      opacity: 1;
     }
   }
-  .animate-light-sweep {
-    animation: light-sweep 14s ease-in-out 3s infinite;
+  .animate-focus-pull {
+    animation: focus-pull 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  /* Warm embers drifting up, matching the sparks in the scene */
+  @keyframes ember-rise {
+    0% {
+      transform: translateY(20px) scale(1);
+      opacity: 0;
+    }
+    12% {
+      opacity: 0.85;
+    }
+    100% {
+      transform: translateY(-160px) scale(0.35);
+      opacity: 0;
+    }
+  }
+  .animate-ember {
+    animation: ember-rise linear infinite;
+    will-change: transform, opacity;
   }
 
   @keyframes fade-up {
@@ -254,7 +275,12 @@
   }
   .animate-marquee,
   .animate-ken-burns,
-  .animate-light-sweep {
+  .animate-focus-pull,
+  .animate-ember {
     animation: none;
+  }
+  .animate-focus-pull {
+    filter: none;
+    opacity: 1;
   }
 }
